@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+   <title>查专业</title>
+<link rel="stylesheet" href="./高考志愿汇/zy.css">
+<script src="./高考志愿汇/jquery.min.js"></script>
+
+</script>
+<link rel="stylesheet" href="./高考志愿汇/ipin-ico.css">
+<link rel="stylesheet" href="./高考志愿汇/base.css">
+<link rel="stylesheet" href="./高考志愿汇/school.css">
+</head>
+<body class="ch-sticky"> 
+<h1 class="page-main-title">高校院校大全-高考志愿汇</h1>
+<input type="text" hidden="" id="navTopValue" value="findSchool">
+
+
+<div class="hidden">
+	<a href="index.html">
+		<img src="./高考志愿汇/pro-tips-logo.png">
+	</a>
+</div>
+<div class="g-head">
+	<div class="topNav clear">
+		<div class="content clear">
+			<ol class="topMenu fr">
+				<li class="topMenu-item">
+					<div class="act-vip">
+						<a href="" rel="nofollow" class="agent">
+							<span>回到首页</span>
+						</a>
+					</div>
+				</li>
+				<li class="topMenu-item">
+					<div class="act-vip">
+						<a href="" rel="nofollow" class="agent">
+							<span>新手教程</span>
+						</a>
+					</div>
+				</li>
+				<li class="topMenu-item">
+					<div class="act-vip">
+						<a href="" target="_blank" rel="nofollow" class="agent">
+							<span>快速通道</span>
+						</a>
+					</div>
+				</li>
+				
+
+				
+				<li class="topMenu-item">
+					<div class="act-vip">
+						
+						<span><a href="">开通</a></span> | <span class="btn-activate-vip">激活 VIP</span>
+						
+						</div>
+					</li>
+					
+	
+	
+	
+					
+				<li class="topMenu-item">
+					<div class="act-user">
+						<span id="login_link" ><a href = "login.html">登录/注册</a></span>
+					</div>
+				</li>
+				
+				</ol>
+			</div>
+		</div>
+	<div class="m-main-menu-wrap">
+		<div class="m-main-holder clear">
+			<div class="m-main-menu content">
+				<div class="logo-wmzy fl"><a href="index.html"><img class="logo" src="./高考志愿汇/logo-v7.png"></a>
+</div>
+<!-- <div class="no1 fl"><a href="/article/article-5a430b57de5eee7d4d6e1b3c" target="_blank"></a></div> -->
+<div class="m-search">
+	<div class="m-input searchBar clear">
+		<input type="text" placeholder="搜索学校、专业" class="js-searchField">
+		<i class="u-search js-searchIcon"></i>
+		<a href="javascript:;" class="f-btn js-searchBtn ">搜索</a>
+	</div>
+</div>
+<div class="m-time-end"></div>
+</div>
+</div>
+
+	
+
+
+<div class="m-nav-warp clear">
+	<ul class="content">
+		<li class="index"><a href="index.html">首页</a></li>
+		<li class="zhiyuan"><a href="">填志愿</a></li>
+		<li class="findSchool"><a href="">找学校</a></li>
+		<li class="findMajor active"><a href="">找专业</a></li>
+		<li class="rankingList"><a href="">排行榜</a></li>
+		<li class="batchLine"><a href="">批次线</a></li>
+		<li class="product"><a href="">会员中心</a></li>
+	</ul>
+</div>
+</div>
+</div>
+
+
+
+<div class="g-school">
+	<div class="content">
+		<div class="crumb">
+			<ul>
+				<li><a href="index.html">首页</a></li>
+				<li>&gt;</li>
+				<li><a href="javascript:;">专业详解</a></li>
+			</ul>
+		</div>
+		<div class="">
+			<div class="m-sch-search searchBar">
+				<input type="text" placeholder="搜索你感兴趣的专业" class="js-searchField"><span class="js-searchBtn b-search" href="javascrit:;">搜索</span>
+				<div class="dropdown-box js-dropdownBox"></div>
+			</div>
+		</div>
+    
+    <!--主体区域-->
+    <div class="container">      
+        <div class="zyk-list">
+            <ul class="zyk-cc-ul clearfix" id="ccUl">
+				<li id="1050" class="onread notop">本科</li>
+				<li id="1060">专科</li>
+    
+			</ul>
+    <div class="spec-list clearfix">
+		<ul class="zyk-lb-ul" id="mlUl">
+			<li id="105001" class="onread notop">哲学<i class="iconfont"></i></li>
+
+			<li id="105002" class="">经济学<i class="iconfont"></i></li>
+
+			<li id="105003" class="">法学<i class="iconfont"></i></li>
+
+			<li id="105004" class="">教育学<i class="iconfont"></i></li>
+
+			<li id="105005" class="">文学<i class="iconfont"></i></li>
+
+			<li id="105006" class="">历史学<i class="iconfont"></i></li>
+
+			<li id="105007" class="">理学<i class="iconfont"></i></li>
+
+			<li id="105008">工学<i class="iconfont"></i></li>
+
+			<li id="105009">农学<i class="iconfont"></i></li>
+
+			<li id="105010">医学<i class="iconfont"></i></li>
+
+			<li id="105012">管理学<i class="iconfont"></i></li>
+
+			<li id="105013">艺术学<i class="iconfont"></i></li>
+
+		</ul>
+		<ul class="zyk-lb-ul zyk-xk-ul" id="xkUl">
+			<li id="10500101" class="onread notop">哲学类<i class="iconfont"></i></li>
+			<li id="105001SY">人文科学试验班类<i class="iconfont"></i></li>
+		</ul>
+        
+		<div class="zyk-list-coverbg"></div>
+        
+		<div id="listResult" class="zyk-table-container zyk-table-container-border">
+
+<table class="ch-table">
+    <tbody><tr>
+        <th>专业名称</th>
+        <th width="120">专业代码</th>
+        <th width="120">开设院校</th>
+        <th width="120">专业主页</th>
+    </tr>
+    
+        <tr>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/specialityDetail.action?specialityId=73381059" target="_blank">哲学</a></td>
+            <td>010101</td>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/schools.action?specialityId=73381059&amp;ssdm=" target="_blank">查看</a></td>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/specialityDetail.action?specialityId=73381059" target="_blank">查看</a></td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/specialityDetail.action?specialityId=73381063" target="_blank">逻辑学</a></td>
+            <td>010102</td>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/schools.action?specialityId=73381063&amp;ssdm=" target="_blank">查看</a></td>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/specialityDetail.action?specialityId=73381063" target="_blank">查看</a></td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/specialityDetail.action?specialityId=73381067" target="_blank">宗教学</a></td>
+            <td>010103</td>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/schools.action?specialityId=73381067&amp;ssdm=" target="_blank">查看</a></td>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/specialityDetail.action?specialityId=73381067" target="_blank">查看</a></td>
+        </tr>
+    
+        <tr>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/specialityDetail.action?specialityId=164248791" target="_blank">伦理学</a></td>
+            <td>010104</td>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/schools.action?specialityId=164248791&amp;ssdm=" target="_blank">查看</a></td>
+            <td><a href="https://gaokao.chsi.com.cn/zyk/zybk/specialityDetail.action?specialityId=164248791" target="_blank">查看</a></td>
+        </tr>
+    
+    
+</tbody></table></div>
+                <div class="zyk-list-borderone"></div>
+                <div class="zyk-list-bordertwo"></div>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
+
+
+<div class="footer">
+    <div class="content">
+        <div class="clear">
+            <div class="footer-left">
+                <div class="clear">
+                    
+                	<div class="footer-list">
+                        <h3>VIP</h3>
+                        <ul>
+                            
+                            <li>
+                            
+                                    <a href="" class="js-buy">升级VIP</a>
+                                
+
+
+                            </li>
+                                
+                                <li><a href="javascript:;" class="btn-activate-vip">激活</a></li>
+                                
+                            
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-list">
+                        <h3>常见问题</h3>
+                        <ul>
+                            <li><a href="" rel="nofollow">产品使用</a></li>
+                            <li><a href="" rel="nofollow">产品购买</a></li>
+                            <li><a href="" rel="nofollow">产品资质</a></li>
+                            <li><a target="_blank" href="" rel="nofollow">产品白皮书</a></li>
+                            <li><a target="_blank" href="" rel="nofollow">iPIN产品说明书</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-list">
+                        <h3>关于我们</h3>
+                        <ul>
+                            <li><a href="" rel="nofollow">团队介绍</a></li>
+                            <li><a href="" rel="nofollow">联系我们</a></li>
+                            <li><a href="" rel="nofollow">商务合作</a></li>
+                            <li><a href="" rel="nofollow">服务条款</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div class="footer-right">
+            	<h3>客服热线：</h3>
+                <p class="phone">11111111</p>
+                <p>期待为您提供帮助</p>
+                <p> 工作日9:30 - 18:30</p>
+            </div>
+
+         </div>
+         <div class="service-tel">客服热线：11111111 免长话费 工作日9:30 - 18:30</div>
+    </div>
+</div>	
+
+
+
+
+<script>
+/**
+ * @description 优化js代码
+ * @author  myx
+ * @date  20170810
+ */
+
+var i_yxmc = "院校名称";
+var i_gkfs = "高考分数";
+var i_zymc = "专业名称";
+
+//定位到某层级
+var flag = 0;
+if(getUrlParam("pageId")&&getUrlParam("type")){
+    flag = 1;
+    var specId = getUrlParam("pageId").toString();
+    var specType = getUrlParam("type").toString();
+    var specIdCc = specId.substr(0,4);
+    var specIdMl = specId.substr(0,6);
+    var specIdXk = specId.substr(0,8);
+}
+
+$(document).ready(function() {
+    loadUl();
+    $("#speciality_submit").click(function(){return querySpecialities();});
+});
+
+/**
+ * @description 判断table是否添加底部border
+ * @author  myx
+ * @date  20170810
+ */
+function judgeBorder() {
+    var mlHeight = $('#mlUl').outerHeight(), //左侧第一个ul高度
+        xkHeight = $('#xkUl').outerHeight(), //左侧第二个ul高度
+        tableHeight = $('#listResult').outerHeight(), //table高度
+        errNum = 24; //误差范围
+    if((mlHeight-errNum)>tableHeight || (xkHeight-errNum)>tableHeight){
+        $('#listResult').addClass('zyk-table-container-border');
+    }else{
+        $('#listResult').removeClass('zyk-table-container-border');
+    }
+}
+
+function loadUl(){
+    $.post(
+        '/zyk/zybk/ccCategory.action',
+        'key=10',
+        function (html) {
+            $('#ccUl').html(html);
+            if(flag){
+                $('#ccUl li#'+specIdCc).click();
+            }else{
+                $('#ccUl li').eq("0").click();
+            }
+        }
+    );
+}
+
+//点击层次
+$('#ccUl').on('click', 'li', function(){
+    var cc = $(this).attr("id");
+    if($(this).index()==0){
+        $(this).addClass("onread notop").siblings("li").removeClass("onread");
+    }else{
+        $(this).addClass("onread").siblings("li").removeClass("onread notop");
+    }
+    $('#mlUl').html("<li><img src='' />&nbsp;正在加载...<li>");
+    $('#xkUl').html("");
+    $('#listResult').html("");
+    if(cc != null && cc != ''){
+        $.post(
+              '/zyk/zybk/mlCategory.action',
+              'key=' + cc,
+              function (html) {
+                  $('#mlUl').html(html);
+                  if(flag && specType != "cc"){
+                      $('#mlUl li#'+specIdMl).click();
+                  }else{
+                      $('#mlUl li').eq("0").click();
+                  }
+              }
+        );
+    }
+});
+
+//点击门类
+$('#mlUl').on('click', 'li', function(){
+    var ml = $(this).attr("id");
+    if($(this).index()==0){
+        $(this).addClass("onread notop").siblings("li").removeClass("onread");
+    }else{
+        $(this).addClass("onread").siblings("li").removeClass("onread notop");
+    }
+    $('#xkUl').html("<li><img src='//t1.chei.com.cn/gaokao/images/common/loading.gif' />&nbsp;正在加载...<li>");
+    $('#listResult').html("");
+    if(ml != null && ml != ''){
+        $.post(
+                '/zyk/zybk/xkCategory.action',
+                'key=' + ml,
+                function (html) {
+                    $('#xkUl').html(html);
+                    if(flag && specType == "xk"){
+                        $('#xkUl li#'+specIdXk).click();
+                    }else{
+                        $('#xkUl li').eq("0").click();
+                    }
+                }
+        );
+    }
+}
+)
+//点击学科
+$('#xkUl li').live("click",function(){
+    var xk = $(this).attr("id");
+    if($(this).index()==0){
+        $(this).addClass("onread notop").siblings("li").removeClass("onread");
+    }else{
+        $(this).addClass("onread").siblings("li").removeClass("onread notop");
+    }
+    $('#listResult').html("<div style='text-align:center'><img src='//t1.chei.com.cn/gaokao/images/common/loading.gif' />&nbsp;正在加载...</div>");
+    if(xk != null && xk != ''){
+        $.post(
+            '/zyk/zybk/specialityesByCategory.action',
+            'key=' + xk,
+            function (html) {
+                $('#listResult').html(html);
+                judgeBorder();
+            }
+        );
+    }
+    flag = 0;
+})
+//取得地址栏参数
+function getUrlParam(name){
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r!=null){
+        return unescape(r[2]);
+    }
+    return null;
+}
+
+String.prototype.trim = function () {
+    return this.replace(/(^\s*)|(\s*$)/g, "");
+}
+
+function querySpecialities(){
+    var keyword = $('#speciality').val();
+    if(keyword.trim() == "请输入专业名称"){
+        alert("请输入专业名称");
+        $('#speciality').focus();
+        return false;
+    }
+    if(!isChineseAndTwo("#speciality","专业名称")){
+        return false;
+    }
+}
+
+//判断名称是汉字且至少两个
+function isChineseAndTwo(id,text){
+    var re = /[^\u4e00-\u9fa5]/;
+    if($(id).val().length<2){
+        alert(text + "请至少输入两个汉字");
+        $(id).focus();
+        return false;
+    }
+    if(re.test($(id).val())){
+        alert(text + "请输入汉字");
+        $(id).focus();
+        return false;
+    }
+    return true;
+}
+</script>
+
+</body>
+</html>

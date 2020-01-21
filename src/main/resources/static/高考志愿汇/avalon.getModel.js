@@ -1,0 +1,4 @@
+/*! wanmeizhiyuan 2019-07-09 */
+
+define(["avalon"],function(avalon){function getChildVM(expr,vm,strLen){for(var pre,_t,t=vm,i=0,len=expr.length;i<len;i++){var k=expr[i];if(_t=t.$model||t,void 0===_t[k])return;pre=t,t=t[k]}return strLen>1?pre[k]:pre}return avalon.getModel=function(expr,vmodels){if(!expr)return null;var str=expr.split("."),strLen=str.length,last=str[strLen-1];1!=str.length&&str.pop();for(var i=0,len=vmodels.length;i<len;i++){var ancestor=vmodels[i],child=getChildVM(str,ancestor,strLen);if(void 0!==child&&(child.hasOwnProperty(last)||Object.prototype.hasOwnProperty.call(child,last)))return[last,child,ancestor]}return null},avalon});
+//# sourceMappingURL=avalon.getModel.js.map

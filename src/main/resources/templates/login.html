@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultrag.net" 
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>  
+    <meta charset="UTF-8">
+    <title>登录注册</title>
+    <link rel="stylesheet" href="css/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="./高考志愿汇/ipin-ico.css">
+	<link rel="stylesheet" href="./高考志愿汇/base.css">
+	<link rel="stylesheet" href="./高考志愿汇/index.css">
+	<link rel="stylesheet" href="./高考志愿汇/scorePane.css">
+</head>
+
+<body>
+<div class="g-head">  <!-- 索引 -->
+	<div class="topNav clear">
+		<div class="content clear">
+			<ol class="topMenu fr">
+				<li class="topMenu-item">
+					<div class="act-vip">
+						<a href="./index.html" rel="nofollow" class="agent" >
+							<span>回到首页</span>
+						</a>
+					</div>
+				</li>
+				<li class="topMenu-item">
+					<div class="act-vip">
+						<a href="" rel="nofollow" class="agent">
+							<span>新手教程</span>
+						</a>
+					</div>
+				</li>
+				<li class="topMenu-item">
+					<div class="act-vip">
+						<a href="" target="_blank" rel="nofollow" class="agent">
+							<span>快速通道</span>
+						</a>
+					</div>
+				</li>
+				
+
+				
+				<li class="topMenu-item">
+					<div class="act-vip">
+						
+						<span><a href="">开通</a></span> | <span class="btn-activate-vip">激活 VIP</span>
+						
+						</div>
+					</li>				
+				<li class="topMenu-item">
+					<div class="act-user">
+						<span id="login_link" ><a href = "">登录/注册</a></span>
+					</div>
+				</li>
+				
+				</ol>
+			</div>
+		</div>
+
+    <div class="materialContainer">
+        <div class="box">
+        <form th:action="@{~/login}" method="post">
+            <div class="title">登录</div>
+            <div class="input">
+                <label for="name">用户名</label>
+                <input type="text" name="username" id="name">
+                <span class="spin"></span>
+            </div>
+            <div class="input">
+                <label for="pass">密码</label>
+                <input type="password" name="userpwd" id="pass">
+                <span class="spin"></span>
+            </div>
+            <div class="button login">
+                <button type="submit">
+                    <span>登录</span>
+                    <i class="fa fa-check"></i>
+                </button>
+            </div>
+            <a href="javascript:" class="pass-forgot">忘记密码？</a>
+        </div>
+	</form>
+        <div class="overbox">
+        	<form th:action="@{~/register}" method="post">
+            <div class="material-button alt-2">
+                <span class="shape"></span>
+            </div>
+            <div class="title">注册</div>
+            <div class="input">
+                <label for="regname">用户名</label>
+                <input type="text" name="username" id="regname">
+                <span class="spin"></span>
+            </div>
+            <div class="input">
+                <label for="regpass">密码</label>
+                <input type="password" name="userpwd" id="regpass">
+                <span class="spin"></span>
+            </div>
+            <div class="input">
+                <label for="reregpass">确认密码</label>
+                <input type="password" name="reuserpwd" id="reregpass">
+                <span class="spin"></span>
+            </div>
+            <div class="button">
+                <button type="submit">
+                    <span>注册</span>
+                </button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
