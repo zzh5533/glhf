@@ -52,16 +52,9 @@
 				
 				<li class="topMenu-item">
 					<div class="act-vip">
-						
 						<span><a href="">开通</a></span> | <span class="btn-activate-vip">激活 VIP</span>
-						
 						</div>
-					</li>
-					
-	
-	
-	
-					
+					</li>		
 				<li class="topMenu-item">
 					<div class="act-user">
 						<span id="login_link" ><a href = "login.html">登录/注册</a></span>
@@ -133,34 +126,26 @@
 			</ul>
     <div class="spec-list clearfix">
 		<ul class="zyk-lb-ul" id="mlUl">
-			<li id="105001" class="onread notop">哲学<i class="iconfont"></i></li>
-
-			<li id="105002" class="">经济学<i class="iconfont"></i></li>
-
-			<li id="105003" class="">法学<i class="iconfont"></i></li>
-
-			<li id="105004" class="">教育学<i class="iconfont"></i></li>
-
-			<li id="105005" class="">文学<i class="iconfont"></i></li>
-
-			<li id="105006" class="">历史学<i class="iconfont"></i></li>
-
-			<li id="105007" class="">理学<i class="iconfont"></i></li>
-
-			<li id="105008">工学<i class="iconfont"></i></li>
-
-			<li id="105009">农学<i class="iconfont"></i></li>
-
-			<li id="105010">医学<i class="iconfont"></i></li>
-
-			<li id="105012">管理学<i class="iconfont"></i></li>
-
-			<li id="105013">艺术学<i class="iconfont"></i></li>
-
-		</ul>
+			<div id="ml"> 
+		        <li id="105001" class="onread notop">哲学<i class="iconfont"> </i></li> 
+		        <li id="105002" class="">经济学<i class="iconfont"> </i></li> 
+		        <li id="105003" class="">法学<i class="iconfont"> </i></li> 
+		        <li id="105004" class="">教育学<i class="iconfont"> </i></li> 
+		        <li id="105005" class="">文学<i class="iconfont"> </i></li> 
+		        <li id="105006" class="">历史学<i class="iconfont"> </i></li> 
+		        <li id="105007" class="">理学<i class="iconfont"> </i></li> 
+		        <li id="105008">工学<i class="iconfont"> </i></li> 
+		        <li id="105009">农学<i class="iconfont"> </i></li> 
+		        <li id="105010">医学<i class="iconfont"> </i></li> 
+		        <li id="105012">管理学<i class="iconfont"> </i></li> 
+		        <li id="105013">艺术学<i class="iconfont"> </i></li> 
+	        </div>
+       </ul> 
 		<ul class="zyk-lb-ul zyk-xk-ul" id="xkUl">
-			<li id="10500101" class="onread notop">哲学类<i class="iconfont"></i></li>
-			<li id="105001SY">人文科学试验班类<i class="iconfont"></i></li>
+			<div id="xk">
+				<li id="10500101" class="onread notop">哲学类<i class="iconfont"></i></li>
+				<li id="105001SY">人文科学试验班类<i class="iconfont"></i></li>
+			</div>
 		</ul>
         
 		<div class="zyk-list-coverbg"></div>
@@ -220,22 +205,13 @@
         <div class="clear">
             <div class="footer-left">
                 <div class="clear">
-                    
                 	<div class="footer-list">
                         <h3>VIP</h3>
                         <ul>
-                            
                             <li>
-                            
                                     <a href="" class="js-buy">升级VIP</a>
-                                
-
-
                             </li>
-                                
                                 <li><a href="javascript:;" class="btn-activate-vip">激活</a></li>
-                                
-                            
                         </ul>
                     </div>
                     
@@ -278,9 +254,7 @@
 
 <script>
 /**
- * @description 优化js代码
- * @author  myx
- * @date  20170810
+ * 优化js代码
  */
 
 var i_yxmc = "院校名称";
@@ -303,11 +277,6 @@ $(document).ready(function() {
     $("#speciality_submit").click(function(){return querySpecialities();});
 });
 
-/**
- * @description 判断table是否添加底部border
- * @author  myx
- * @date  20170810
- */
 function judgeBorder() {
     var mlHeight = $('#mlUl').outerHeight(), //左侧第一个ul高度
         xkHeight = $('#xkUl').outerHeight(), //左侧第二个ul高度
@@ -322,7 +291,7 @@ function judgeBorder() {
 
 function loadUl(){
     $.post(
-        '/zyk/zybk/ccCategory.action',
+        'https://gaokao.chsi.com.cn/zyk/zybk/ccCategory.action',
         'key=10',
         function (html) {
             $('#ccUl').html(html);
@@ -348,14 +317,14 @@ $('#ccUl').on('click', 'li', function(){
     $('#listResult').html("");
     if(cc != null && cc != ''){
         $.post(
-              '/zyk/zybk/mlCategory.action',
+              '/findMajor.html/ccaction',
               'key=' + cc,
               function (html) {
                   $('#mlUl').html(html);
                   if(flag && specType != "cc"){
-                      $('#mlUl li#'+specIdMl).click();
+                  	$('#mlUl li#'+specIDMl).click();
                   }else{
-                      $('#mlUl li').eq("0").click();
+                	$('#mlUl li').eq("0").click();
                   }
               }
         );
@@ -374,9 +343,9 @@ $('#mlUl').on('click', 'li', function(){
     $('#listResult').html("");
     if(ml != null && ml != ''){
         $.post(
-                '/zyk/zybk/xkCategory.action',
+                '/findMajor.html/mlaction',
                 'key=' + ml,
-                function (html) {
+                function (html)   {
                     $('#xkUl').html(html);
                     if(flag && specType == "xk"){
                         $('#xkUl li#'+specIdXk).click();
@@ -399,7 +368,7 @@ $('#xkUl li').live("click",function(){
     $('#listResult').html("<div style='text-align:center'><img src='//t1.chei.com.cn/gaokao/images/common/loading.gif' />&nbsp;正在加载...</div>");
     if(xk != null && xk != ''){
         $.post(
-            '/zyk/zybk/specialityesByCategory.action',
+            '/findMajor.html/xkaction',
             'key=' + xk,
             function (html) {
                 $('#listResult').html(html);

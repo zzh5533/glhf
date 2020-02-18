@@ -6,5 +6,5 @@ public interface UserService {
 
 	boolean addUser(UserBasicInfo userbasicinfo);
 	
-	 boolean searchUserByusername(UserBasicInfo userbasicinfo);
+	boolean searchUserByusername(UserBasicInfo userbasicinfo);
 }

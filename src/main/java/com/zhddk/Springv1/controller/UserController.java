@@ -33,14 +33,9 @@ public class UserController {
 	}
 	
 	
-	
-	
 	@RequestMapping("/register")
 	public String register(UserBasicInfo userbasicinfo,String reuserpwd,Model model) {
-/*		System.out.println(username);
-		System.out.println(userpwd);
-		System.out.println(reuserpwd);*/
-		
+
 		//检验userpwd和reuserpwd是否一致
 		if(userbasicinfo.getUserpwd().equals(reuserpwd)) {
 			//一致
