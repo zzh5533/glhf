@@ -20,25 +20,46 @@
 	</properties>
 
 	<dependencies>
+	
+		<!-- Spring Boot Reids 依赖 -->
+		 <dependency>
+   			<groupId>org.springframework.boot</groupId>
+   			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		
+		<!-- redis依赖commons-pool -->
+		<dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+		
+		<!-- Spring Boot thymeleaf 依赖 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+		
+		 <!-- Spring Boot Web 依赖 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+		<!-- Spring Boot Mybatis 依赖 -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>2.1.1</version>
 		</dependency>
 
+		 <!-- MySQL 连接驱动依赖 -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		
+		<!-- Spring Boot Test 依赖 -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -51,7 +72,9 @@
 			</exclusions>
 		</dependency>
 	</dependencies>
+	
 
+        
 	<build>
 		<plugins>
 			<plugin>

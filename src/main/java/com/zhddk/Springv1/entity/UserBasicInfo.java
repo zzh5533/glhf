@@ -2,13 +2,13 @@ package com.zhddk.Springv1.entity;
 
 public class UserBasicInfo {
 	
-	private Integer userid;
+	private Integer userid=0;
 	private String username;
 	private String userpwd;
-	private String usersex;
-	private String userphone;
-	private String useremail;
-	private boolean useradmin;
+	private String usersex="";
+	private String userphone="";
+	private String useremail="";
+	private boolean useradmin=false;
 	
 	public Integer getUserid() {
 		return userid;

@@ -51,7 +51,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 					</li>				
 				<li class="topMenu-item">
 					<div class="act-user">
-						<span id="login_link" ><a href = "">登录/注册</a></span>
+						<span id="login_link"  onload = "load_data()"><a href = "">登录/注册</a></span>
 					</div>
 				</li>
 				
@@ -61,7 +61,9 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
     <div class="materialContainer">
         <div class="box">
-        <form th:action="@{~/login}" method="post">
+        
+        
+        <form id="login" onsubmit="return false;">
             <div class="title">登录</div>
             <div class="input">
                 <label for="name">用户名</label>
@@ -74,16 +76,18 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
                 <span class="spin"></span>
             </div>
             <div class="button login">
-                <button type="submit">
+                <button type="submit" id="btn-submit">
                     <span>登录</span>
                     <i class="fa fa-check"></i>
                 </button>
             </div>
             <a href="javascript:" class="pass-forgot">忘记密码？</a>
         </div>
+        
+        
 	</form>
         <div class="overbox">
-        	<form th:action="@{~/register}" method="post">
+        	<form id="register" onsubmit="return false;">
             <div class="material-button alt-2">
                 <span class="shape"></span>
             </div>
@@ -104,7 +108,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
                 <span class="spin"></span>
             </div>
             <div class="button">
-                <button type="submit">
+                <button type="submit" id="btn-submit">
                     <span>注册</span>
                 </button>
             </div>
@@ -114,6 +118,93 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     </div>
     <script src="js/jquery.min.js"></script>
     <script src="js/index.js"></script>
+  	<script type="text/javascript">
+    $(function() {
+        $('#login').submit(function() { 
+            //此处可做表单验证
+            if ($("#name").val() == "") {
+                alert("用户名不能为空");
+                return false;
+            }
+            var postData = $("#login").serialize(); //序列化表单
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                data: postData,
+                beforeSend: function() {
+                    $("#btn-submit").attr("disabled", true);//防止用户重复提交表单
+                    $("#btn-submit").val("正在登陆...");
+                },
+                success: function(msg) {
+                    if (msg == 0) {
+                        alert('登陆成功,正在跳转....');
+                        var exp = new Date();
+            			exp.setTime(exp.getTime() + 60 * 1000 * 60 * 24); //24小时
+            			document.cookie = "userName=" + $("#name").val() + ";expires=" + exp.toGMTString();
+            			document.cookie = "passWord=" + $("#pass").val() + ";expires=" + exp.toGMTString();
+            			document.cookie = "score="  + msg.score + ";expires=" + exp.toGMTString();
+            			document.cookie = "tele="  + msg.tele + ";expires=" + exp.toGMTString();
+						document.cookie = "scoreRank="+ msg.scoreRank + ";expires=" + exp.toGMTString();;
+            			window.location.href="index.html";
+                    } else {
+                        $("#btn-submit").attr("disabled", false);
+                        $("#btn-submit").val("登陆");
+                        alert("用户或密码错误！");
+                    }
+                }
+            });
+        });
+        
+        $('#register').submit(function() { 
+            //此处可做表单验证
+            if ($("#regpass").val() != $("#reregpass").val()) {
+                alert("两次输入密码不一致!");
+                return false;
+            }
+            var postData = $("#register").serialize(); //序列化表单
+            $.ajax({
+                type: "POST",
+                url: "/register",
+                data: postData,
+                beforeSend: function() {
+                    $("#btn-submit").attr("disabled", true);//防止用户重复提交表单
+                    $("#btn-submit").val("正在注册...");
+                },
+                success: function(msg) {
+                    if (msg == 0) {
+                        alert('注册成功,正在跳转....');
+                        var exp = new Date();
+            			exp.setTime(exp.getTime() + 60 * 1000 * 60 * 24); //24小时
+            			document.cookie = "userName=" + $("#regname").val() + ";expires=" + exp.toGMTString();
+            			document.cookie = "passWord=" + $("#regpass").val() + ";expires=" + exp.toGMTString();
+						document.cookie = "score=" ;
+						document.cookie = "scoreRank=";
+						document.cookie = "tele=";
+            			window.location.href="index.html";
+                    } else {
+                        $("#btn-submit").attr("disabled", false);
+                        $("#btn-submit").val("注册");
+                        alert("该账号已被注册！");
+                    }
+                }
+            });
+        });
+        
+        
+        
+    });
+</script>
+    <script>
+    function load_data(){
+   	 var theme=localStorage.getItem("username");
+   	 if(theme==null||theme==""){
+   		$("#login_link").show(); 
+   	 }else{
+   		 $("#login_link").hide();  
+   		 $("#uname").html(theme);
+   	 }
+   }
+</script>
 </body>
 
 </html>

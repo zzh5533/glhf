@@ -2,15 +2,55 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
    <title>查专业</title>
 <link rel="stylesheet" href="./高考志愿汇/zy.css">
 <script src="./高考志愿汇/jquery.min.js"></script>
-
-</script>
 <link rel="stylesheet" href="./高考志愿汇/ipin-ico.css">
 <link rel="stylesheet" href="./高考志愿汇/base.css">
 <link rel="stylesheet" href="./高考志愿汇/school.css">
+<style>
+.g-school .m-sch-search .b-search {
+	width: 10.001%;
+}
+</style>
+<script>
+function getCookie(name) {
+	var strCookie = document.cookie;
+	var arrCookie = strCookie.split("; ");
+	for (var i = 0; i < arrCookie.length; i++) {
+		var arr = arrCookie[i].split("=");
+		if (arr[0] == name) return arr[1];
+	}
+	return "";
+}
+window.onload = function(){
+	var islogin = getCookie("userName");
+	var isscore = getCookie("score");
+	if(islogin !==''){
+		document.getElementById("login_link").innerHTML =islogin;
+		$("#cglogin").html('<ul class="user-menu-item "><li class="logout"><a>我的志愿表</a></li><li class="logout"><a>我的信息</a></li><li class="logout"><a>帐号安全</a></li><li class="logout"><a id="logout_link">退出登录</a></li></ul>');
+		$(".product").html('<a href="myapply.html">个人中心</a>');
+		$(".zhiyuan").html('<a href="myspace.html">填志愿</a>');
+		if(isscore !==''){
+			$(".zhiyuan").html('<a href="applysch.html">填志愿</a>');
+		}
+	}
+}
+
+$(function(){
+	$("#logout_link").live("click",function(){
+		document.cookie = "userName=";
+		document.cookie = "passWord=";
+		document.cookie = "score=";
+		document.cookie = "ScoreRank=";
+		document.cookie = "tele=";
+		window.location.reload(true);
+	});
+	$("#cglogin").live("mouseout",function(){
+		$("#cglogin").style.display = "block";
+	});
+})
+</script>
 </head>
 <body class="ch-sticky"> 
 <h1 class="page-main-title">高校院校大全-高考志愿汇</h1>
@@ -56,8 +96,13 @@
 						</div>
 					</li>		
 				<li class="topMenu-item">
-					<div class="act-user">
-						<span id="login_link" ><a href = "login.html">登录/注册</a></span>
+					<div class="act-user"> 
+						<span id="login_link"><a href="login.html">登录/注册</a></span> 
+						<div class="drop user-menu" id ="cglogin" style = " width:100px">
+							<ul class="user-menu-item ">
+								<li class="logout"><a href="login.html">请先登录</a></li>
+							</ul>
+						</div> 
 					</div>
 				</li>
 				
@@ -67,9 +112,8 @@
 	<div class="m-main-menu-wrap">
 		<div class="m-main-holder clear">
 			<div class="m-main-menu content">
-				<div class="logo-wmzy fl"><a href="index.html"><img class="logo" src="./高考志愿汇/logo-v7.png"></a>
+				<div class="logo-gkzyh fl"><a href="index.html"><img class="logo" src="./高考志愿汇/logo-v7.png"></a>
 </div>
-<!-- <div class="no1 fl"><a href="/article/article-5a430b57de5eee7d4d6e1b3c" target="_blank"></a></div> -->
 <div class="m-search">
 	<div class="m-input searchBar clear">
 		<input type="text" placeholder="搜索学校、专业" class="js-searchField">
@@ -86,13 +130,13 @@
 
 <div class="m-nav-warp clear">
 	<ul class="content">
-		<li class="index"><a href="index.html">首页</a></li>
-		<li class="zhiyuan"><a href="">填志愿</a></li>
-		<li class="findSchool"><a href="">找学校</a></li>
-		<li class="findMajor active"><a href="">找专业</a></li>
-		<li class="rankingList"><a href="">排行榜</a></li>
-		<li class="batchLine"><a href="">批次线</a></li>
-		<li class="product"><a href="">会员中心</a></li>
+		<li class="index"><a href="index.html">首页</a></li> 
+		<li class="zhiyuan"><a href="applysch.html">填志愿</a></li> 
+		<li class="findSchool"><a href="schoolinfo.html">找学校</a></li> 
+		<li class="findMajor active"><a href="findMajor.html">找专业</a></li> 
+		<li class="rankingList"><a href="">排行榜</a></li> 
+	    <li class="solve"><a href="solve.html">报考指导</a></li> 
+		<li class="product"><a href="login.html">个人中心</a></li> 
 	</ul>
 </div>
 </div>
@@ -200,54 +244,69 @@
 </div>
 
 
-<div class="footer">
-    <div class="content">
-        <div class="clear">
-            <div class="footer-left">
-                <div class="clear">
-                	<div class="footer-list">
-                        <h3>VIP</h3>
-                        <ul>
-                            <li>
-                                    <a href="" class="js-buy">升级VIP</a>
-                            </li>
-                                <li><a href="javascript:;" class="btn-activate-vip">激活</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="footer-list">
-                        <h3>常见问题</h3>
-                        <ul>
-                            <li><a href="" rel="nofollow">产品使用</a></li>
-                            <li><a href="" rel="nofollow">产品购买</a></li>
-                            <li><a href="" rel="nofollow">产品资质</a></li>
-                            <li><a target="_blank" href="" rel="nofollow">产品白皮书</a></li>
-                            <li><a target="_blank" href="" rel="nofollow">iPIN产品说明书</a></li>
-                        </ul>
-                    </div>
-                    <div class="footer-list">
-                        <h3>关于我们</h3>
-                        <ul>
-                            <li><a href="" rel="nofollow">团队介绍</a></li>
-                            <li><a href="" rel="nofollow">联系我们</a></li>
-                            <li><a href="" rel="nofollow">商务合作</a></li>
-                            <li><a href="" rel="nofollow">服务条款</a></li>
-                        </ul>
-                    </div>
+<div class="footer"> 
+     <div class="content"> 
+      <div class="clear"> 
+       <div class="footer-left"> 
+        <div class="clear"> 
+         <div class="footer-list"> 
+          <h3>VIP</h3> 
+          <ul> 
+           <li> <a href="" class="js-buy">购买VIP</a> </li> 
+           <li><a href="javascript:;" class="btn-activate-vip">激活</a></li> 
+          </ul> 
+         </div> 
+         <div class="footer-list"> 
+          <h3>常见问题</h3> 
+          <ul> 
+           <li><a href="" rel="nofollow">产品使用</a></li> 
+           <li><a href="" rel="nofollow">会员充值</a></li> 
+           <li><a href="" rel="nofollow">功能介绍</a></li>  
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+          <ul> 
+		  <h3>关于我们</h3>
+           <li><a href="" rel="nofollow">团队介绍</a></li> 
+           <li><a href="" rel="nofollow">联系我们</a></li> 
+           <li><a href="" rel="nofollow">商务合作</a></li> 
+           <li><a href="" rel="nofollow">服务条款</a></li> 
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+		 <h3>关注我们</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云订阅号</h3>
+				</li>
+			</ul> 
+			
+		 </div> 
+		 <div class="footer-list"> 
+			<h3>~</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云服务号</h3>
+				</li>
+			</ul> 
+		 </div> 
 
-                </div>
-            </div>
-            <div class="footer-right">
-            	<h3>客服热线：</h3>
-                <p class="phone">11111111</p>
-                <p>期待为您提供帮助</p>
-                <p> 工作日9:30 - 18:30</p>
-            </div>
-
-         </div>
-         <div class="service-tel">客服热线：11111111 免长话费 工作日9:30 - 18:30</div>
-    </div>
-</div>	
+        </div> 
+       </div> 
+       <div class="footer-right"> 
+        <h3>来电咨询:</h3> 
+        <p class="phone">400-xxx-xxxx</p> 
+        <p>期待为您提供帮助</p> 
+        <p>本服务只提供参考，不代表一定成功</p> 
+       </div> 
+      </div> 
+      <div class="service-tel">
+        客服热线：13456789
+      </div> 
+     </div> 
+</div>
 
 
 
