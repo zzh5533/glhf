@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <title>高考志愿汇-高校信息</title> 
+  <link rel="stylesheet" href="./高考志愿汇/ipin-ico.css" /> 
+  <link rel="stylesheet" href="./高考志愿汇/base.css" /> 
+  <link rel="stylesheet" href="./高考志愿汇/school.css" /> 
+  <link rel="stylesheet" href="./高考志愿汇/gaokao.min.css" /> 
+  <script src="./高考志愿汇/jquery.min.js"></script> 
+  <style>
+  .condition-container div {
+    min-height: 35px;
+    margin-bottom: 10px;
+}
+.condition-container {
+    overflow: hidden;
+    padding: 15px 10px 5px 20px;
+    border: 1px solid #eee;
+    font-size: 16px;
+    margin-bottom: 20px;
+    background: #fff;
+}
+label {
+    position: absolute;
+	height: 72px;
+    line-height: 80px;
+    color: #333;
+}
+.condition-type ul {
+    overflow: hidden;
+    margin-left: 120px;
+}
+.condition-type ul li {
+    float: left;
+    position: relative;
+    width: 144px;
+    height: 72px;
+    margin: 0 30px 0 0;
+    background: no-repeat;
+    cursor: pointer;
+}
+.select::after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 144px;
+    height: 72px;
+    background: url(高考志愿汇/img/select.png) no-repeat;
+}
+.lesson-list {
+    border-bottom: 1px solid #ebebeb;
+}
+.lesson-list .lesson-item {
+    position: relative;
+    height: 161px;
+    padding: 20px;
+    border: 1px solid #ebebeb;
+    margin: 0;
+    background: #fff;
+    border-bottom: 0;
+    cursor: pointer;
+}
+.lesson-list .lesson-item .cover {
+    position: relative;
+    float: left;
+    width: 213px;
+    height: 120px;
+    margin-right: 20px;
+}
+.lesson-list .lesson-item .info {
+    float: left;
+    width: 560px;
+    height: 120px;
+}
+.lesson-list .lesson-item .info h4 span {
+    display: inline-block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+	font-size: 18px;
+    line-height: 18px;
+    color: #333;
+	    line-height: 120px;
+    text-align: justify;
+}
+.lesson-list .lesson-item .handle {
+    font-size: 14px;
+    float: right;
+    margin-right: 22px;
+}
+.lesson-list .lesson-item .handle .view .btn {
+    display: inline-block;
+    padding: 0 20px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-top:50px;
+    border: 1px solid #ff8a00;
+    color: #f89500;
+    border-radius: 15px;
+    cursor: pointer;
+	font-size: 14px;
+}
+.poster{
+	height:120px;
+	width:213px
+}
+  </style>
+  <script>
+	var i = '_';
+	var z = '_';
+	var b = '_';
+
+	$(function () {
+        $(".tag ").click(function () {
+			if($(this).parent().attr('id') == 'prov_filter'){
+				if($(this).text()=="不限"){
+					i ='_';
+				}else{
+					i = $(this).text();
+				}
+			}else if($(this).parent().attr('id') == 'type_filter'){
+				if($(this).text()=="不限"){
+					z ='_';
+				}else{
+					z = $(this).text();
+				}
+			}else{
+				if($(this).text()=="不限"){
+					b ='_';
+				}else{
+					b = $(this).text();
+				}
+			}
+			$(this).removeClass("tag ");
+			$(this).addClass("tag active");
+			$(this).siblings().removeClass(" active");
+		});
+		$(".list li").click(function(){
+			$(".list li").siblings().removeClass("select");
+			$(this).addClass("select");
+		})
+    });
+</script>
+ </head>  
+ <body> 
+  <h1 class="page-main-title">高校院校大全-高考志愿汇</h1> 
+  <input type="text" hidden="" id="navTopValue" value="findSchool" /> 
+  <div class="hidden"> 
+   <a href="index.html"> <img src="./高考志愿汇/pro-tips-logo.png" /> </a> 
+  </div> 
+  <div class="g-head"> 
+   <div class="topNav clear"> 
+    <div class="content clear"> 
+     <ol class="topMenu fr"> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" rel="nofollow" class="agent"> <span>回到首页</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" rel="nofollow" class="agent"> <span>新手教程</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" target="_blank" rel="nofollow" class="agent"> <span>快速通道</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <span><a href="">开通</a></span> | 
+        <span class="btn-activate-vip">激活 VIP</span> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-user" onload="load_data()"> 
+        <span id="login_link"><a href="login.html">登录/注册</a></span> 
+       </div> </li> 
+     </ol> 
+    </div> 
+   </div> 
+   <div class="m-main-menu-wrap"> 
+    <div class="m-main-holder clear"> 
+     <div class="m-main-menu content"> 
+      <div class="logo-gkzyh fl">
+       <a href="index.html"><img class="logo" src="./高考志愿汇/logo-v7.png" /></a> 
+      </div> 
+      <div class="m-search"> 
+       <div class="m-input searchBar clear"> 
+        <input type="text" placeholder="搜索学校、专业" class="js-searchField" /> 
+        <i class="u-search js-searchIcon"></i> 
+        <a href="javascript:;" class="f-btn js-searchBtn ">搜索</a> 
+       </div> 
+      </div> 
+      <div class="m-time-end"></div> 
+     </div> 
+    </div> 
+    <div class="m-nav-warp clear"> 
+     <ul class="content"> 
+      <li class="index"><a href="index.html">首页</a></li> 
+      <li class="zhiyuan"><a href="">填志愿</a></li> 
+      <li class="findSchool"><a href="">找学校</a></li> 
+      <li class="findMajor"><a href="">找专业</a></li> 
+      <li class="rankingList"><a href="">排行榜</a></li> 
+      <li class="batchLine active"><a href="">报考指导</a></li> 
+      <li class="product"><a href="">个人中心</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="g-school"> 
+   <div class="content"> 
+    <div id="school_block"> 
+     <div class="subnav-box"> 
+		<div class="condition-container condition-type">
+			<div class="type">
+				<label>新高考解读：</label>
+				<ul class="list">
+					<li class="select"><img src ="高考志愿汇/img/all.png"></li>
+					<li><img src ="高考志愿汇/img/page.png"></li>
+					<li><img src ="高考志愿汇/img/free.png"></li>
+					<li><img src ="高考志愿汇/img/vip.png"></li>
+				</ul>
+			</div>
+		</div>
+     </div> 
+	 <div class="subnav-box"> 
+		<dl class="clear"> 
+       <dt>
+        指导类型：
+       </dt> 
+       <dd> 
+        <ul class="clear" id="prov_filter" type="radio"> 
+         <li class="tag active">不限</li> 
+         <li class="tag ">专业分析</li> 
+         <li class="tag ">院校分析</li> 
+         <li class="tag ">新专业趋向</li> 
+         <li class="tag ">问题分析及预防对策</li> 
+         <li class="tag ">填报解析</li> 
+        </ul> 
+       </dd> 
+      </dl>
+    </div> 
+   </div>
+   
+   <div class="lesson-list-container">
+<ul class="lesson-list">
+<li class="lesson-item">
+  <div class="cover">
+    <img class="poster" src="高考志愿汇/img/zn1.jpg">
+  </div>
+  <div class="info">
+    <h4>
+      <span>
+        人工智能背后的人工力量
+      </span>
+    </h4>
+  </div>
+  <div class="handle">
+    <p class="view"><span class="btn btn-outline">查看详情</span></p>
+  </div>
+</li>
+<li class="lesson-item">
+  <div class="cover">
+    <img class="poster" src="高考志愿汇/img/zn2.jpg">
+  </div>
+  <div class="info">
+    <h4>
+      <span>
+       双一流、C9、34所、985、小985、211、小211
+      </span>
+    </h4>
+   </div>
+  <div class="handle">
+    <p class="view"><span class="btn btn-outline">查看详情</span></p>
+  </div>
+</li>
+<li class="lesson-item">
+  <div class="cover">
+    <img class="poster" src="高考志愿汇/img/zn3.jpg">
+  </div>
+  <div class="info">
+    <h4>
+      <span>
+        如何根据自身特长选大学专业
+      </span>
+    </h4>
+  </div>
+  <div class="handle">
+    <p class="view"><span class="btn btn-outline">查看详情</span></p>
+  </div>
+</li>
+<li class="lesson-item">
+  <div class="cover">
+    <img class="poster" src="高考志愿汇/img/zn4.jpg">
+  </div>
+  <div class="info">
+    <h4>
+      <span >
+        调剂、退档等常见问题分析及预防对策
+      </span>
+    </h4>
+   </div>
+  <div class="handle">
+    <p class="view"><span class="btn btn-outline">查看详情</span></p>
+  </div>
+</li>
+<li class="lesson-item">
+  <div class="cover">
+    <img class="poster" src="高考志愿汇/img/zn5.jpg">
+  </div>
+  <div class="info">
+    <h4>
+      <span >
+		何为提前批？适合哪些考生报？有哪些大学/专业？
+      </span>
+    </h4>
+  </div>
+  <div class="handle">
+     
+    <p class="view"><span class="btn btn-outline">查看详情</span></p>
+  </div>
+</li>
+<li class="lesson-item">
+  <div class="cover">
+    <img class="poster" src="高考志愿汇/img/zn6.jpg">
+  </div>
+  <div class="info">
+    <h4>
+      <span >
+			招生章程的这六处细节你必须要关注    
+	</span>
+    </h4>
+  </div>
+  <div class="handle">
+    <p class="view"><span class="btn btn-outline" >查看详情</span></p>
+  </div>
+</li>
+<li class="lesson-item" data-href="/lesson/639">
+  <div class="cover">
+    <img class="poster" src="高考志愿汇/img/zn7.jpg">
+  </div>
+  <div class="info">
+    <h4>
+      <span >
+		“七分考三分报”，高考志愿怎么填报才最合理？	      
+	</span>
+    </h4>
+  </div>
+  <div class="handle">
+     
+    <p class="view"><span class="btn btn-outline">查看详情</span></p>
+  </div>
+</li>
+<!-- <li class="lesson-item" > -->
+  <!-- <div class="cover"> -->
+    <!-- <img class="poster" src="高考志愿汇/img/zn8.jpg"> -->
+  <!-- </div> -->
+  <!-- <div class="info"> -->
+    <!-- <h4> -->
+      <!-- <span > -->
+       <!-- zn8 -->
+      <!-- </span> -->
+    <!-- </h4> -->
+  <!-- </div> -->
+  <!-- <div class="handle"> -->
+    <!-- <p class="view"><span class="btn btn-outline">查看详情</span></p> -->
+  <!-- </div> -->
+<!-- </li> -->
+<!-- <li class="lesson-item"> -->
+  <!-- <div class="cover"> -->
+    <!-- <img class="poster" src="高考志愿汇/img/zn9.jpg"> -->
+  <!-- </div> -->
+  <!-- <div class="info"> -->
+    <!-- <h4> -->
+      <!-- <span title=> -->
+        <!-- zn9 -->
+      <!-- </span> -->
+    <!-- </h4> -->
+  <!-- </div> -->
+  <!-- <div class="handle"> -->
+    <!-- <p class="view"><span class="btn btn-outline">查看详情</span></p> -->
+  <!-- </div> -->
+<!-- </li> -->
+<!-- <li class="lesson-item"> -->
+  <!-- <div class="cover"> -->
+    <!-- <img class="poster" src="高考志愿汇/img/zn10.jpg"> -->
+  <!-- </div> -->
+  <!-- <div class="info"> -->
+    <!-- <h4> -->
+      <!-- <span> -->
+<!-- zn10 -->
+      <!-- </span> -->
+    <!-- </h4> -->
+  <!-- </div> -->
+  <!-- <div class="handle"> -->
+     
+    <!-- <p class="view"><span class="btn btn-outline">查看详情</span></p> -->
+  <!-- </div> -->
+<!-- </li> -->
+</ul>
+</div>
+   
+  </div>
+   <div class="footer"> 
+    <div class="content"> 
+     <div class="clear"> 
+      <div class="footer-left"> 
+       <div class="clear"> 
+        <div class="footer-list"> 
+         <h3>VIP</h3> 
+         <ul> 
+          <li> <a href="" class="js-buy">升级VIP</a> </li> 
+          <li><a href="javascript:;" class="btn-activate-vip">激活</a></li> 
+         </ul> 
+        </div> 
+        <div class="footer-list"> 
+         <h3>常见问题</h3> 
+         <ul> 
+          <li><a href="" rel="nofollow">产品使用</a></li> 
+          <li><a href="" rel="nofollow">产品购买</a></li> 
+          <li><a href="" rel="nofollow">产品资质</a></li> 
+          <li><a target="_blank" href="" rel="nofollow">产品白皮书</a></li> 
+          <li><a target="_blank" href="" rel="nofollow">iPIN产品说明书</a></li> 
+         </ul> 
+        </div> 
+        <div class="footer-list"> 
+         <h3>关于我们</h3> 
+         <ul> 
+          <li><a href="" rel="nofollow">团队介绍</a></li> 
+          <li><a href="" rel="nofollow">联系我们</a></li> 
+          <li><a href="" rel="nofollow">商务合作</a></li> 
+          <li><a href="" rel="nofollow">服务条款</a></li> 
+         </ul> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="footer-right"> 
+       <h3>客服热线：</h3> 
+       <p class="phone">11111111</p> 
+       <p>期待为您提供帮助</p> 
+       <p> 工作日9:30 - 18:30</p> 
+      </div> 
+     </div> 
+     <div class="service-tel">
+      客服热线：11111111 免长话费 工作日9:30 - 18:30
+     </div> 
+    </div> 
+   </div> 
+ </body>
+</html>

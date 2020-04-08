@@ -1,0 +1,1785 @@
+<!DOCTYPE html>
+<html>
+<head> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/> 
+<title>填志愿</title> 
+<link rel="stylesheet" href="./高考志愿汇/zy.css"/> 
+<script src="./高考志愿汇/jquery.min.js"></script> 
+<link rel="stylesheet" href="./高考志愿汇/ipin-ico.css"/> 
+<link rel="stylesheet" href="./高考志愿汇/base.css"/> 
+<link rel="stylesheet" href="./高考志愿汇/school.css"/> 
+<link rel="stylesheet" href="./高考志愿汇/gaokao_fe2.css"/> 
+<style>
+table{
+	width: 100%;
+    line-height: 25px;
+    border-bottom: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+th{
+	padding: 12px 10px;
+    border-bottom: 1px solid #e9e9e9;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: left;
+}
+td{
+	padding: 10px 10px;
+    border-bottom: 1px solid #e9e9e9;
+    font-size: 13px;
+    color: #666;
+    text-align: left;
+}
+input{
+	border:0.3px solid #a8bbc3;
+	font-size: 12px;
+    text-align: left;
+	padding: 6px 3px;
+	width:100%;
+}
+span.active{
+display:relative;
+    background: #00aff0;
+    width: auto;
+    height: 28px;
+    line-height: 28px;
+    padding: 0px 20px;
+}
+li.cz{
+    background: #00aff0;
+}
+li.a_1{
+	padding-left: 23px;
+	display: block;
+    height: 38px;
+	color: #828282;
+	line-height: 38px;
+	border: none;
+    text-decoration: none;
+    font-family: arial,"microsoft yahei",verdana, simsun;
+}
+button,.add{
+    display: inline-block;
+    width: auto;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 10px;
+    border: none;
+    border-radius: 3px;
+    background: #00aff0;
+    color: #fff;
+    font-size: 14px;
+    vertical-align: middle;
+    outline: 0;
+    cursor: pointer;
+    overflow: visible;
+}
+.add,#fill{
+	padding: 0px 16px;
+}
+a{
+	cursor:pointer;
+}
+.gb_pages{
+	margin:0 auto;
+	width:60%;
+}
+#toExcel{
+	float:right;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid #00aff0;
+    border-radius: 20px;
+    cursor: pointer;
+	margin:10px;
+	padding: 0px 20px;
+}
+
+#clearAll{
+	float:right;
+	background: #FB8C8C;
+    width: auto;
+    height: 28px;
+    line-height: 28px;
+    padding: 0px 20px;
+}
+</style>
+</head> 
+<script>
+	window.onbeforeunload = function(){//关闭时 保存当前状态
+		localStorage.clear();
+		var tab = $("#tab");
+		for(var i =1 ; i<$("#tab tr").length ; i++){
+			if(tab.eq(0).find("tr").eq(i).find("td").eq(1).children().length>0){
+				localStorage.setItem(i,JSON.stringify({
+					Lx : 1,
+					Id : tab.eq(0).find("tr").eq(i).find("td").eq(0).text(),
+					Xd : tab.eq(0).find("tr").eq(i).find("td").eq(1).find("input").val(),
+					Xn : tab.eq(0).find("tr").eq(i).find("td").eq(2).find("input").val(),
+					Zd : tab.eq(0).find("tr").eq(i).find("td").eq(3).find("input").val(),
+					Zn : tab.eq(0).find("tr").eq(i).find("td").eq(4).find("input").val()
+				}));
+			}else{
+				localStorage.setItem(i,JSON.stringify({
+					Lx : 2,
+					Id : tab.eq(0).find("tr").eq(i).find("td").eq(0).text(),
+					Xd : tab.eq(0).find("tr").eq(i).find("td").eq(1).text(),
+					Xn : tab.eq(0).find("tr").eq(i).find("td").eq(2).text(),
+					Zd : tab.eq(0).find("tr").eq(i).find("td").eq(3).text(),
+					Zn : tab.eq(0).find("tr").eq(i).find("td").eq(4).text()
+				}));
+			}
+		}
+	};
+		function getCookie(name) {
+			var strCookie = document.cookie;
+			var arrCookie = strCookie.split("; ");
+			for (var i = 0; i < arrCookie.length; i++) {
+				var arr = arrCookie[i].split("=");
+				if (arr[0] == name) return arr[1];
+			}
+			return "";
+		}
+	window.onload = function(){
+		var islogin = getCookie("userName");
+		var isscore = getCookie("score");
+		if(islogin!==''){//登录用户名写入
+			document.getElementById("login_link").innerHTML =islogin;
+			$("#cglogin").html('<ul class="user-menu-item "><li class="logout"><a>我的志愿表</a></li><li class="logout"><a>我的信息</a></li><li class="logout"><a>帐号安全</a></li><li class="logout"><a id="logout_link">退出登录</a></li></ul>');
+			$(".product").html('<a href="myapply.html">个人中心</a>');
+			$(".zhiyuan").html('<a href="myspace.html">填志愿</a>');
+		if(isscore !==''){
+			$(".zhiyuan").html('<a href="applysch.html">填志愿</a>');
+		}
+		}
+		//写入关闭时的状态
+		var html = "<tr><th width='8%'>序号</th><th width='12%'>学校代码</th><th width='22%'>学校名称</th><th width='12%'>专业代码</th><th width='22%'>专业名称</th><th width='24%'>操作<button id ='clearAll'>清空</button><th></tr>";
+		for(let i =1; localStorage.getItem(i) != null ; i++){
+			var tabon = localStorage.getItem(i);
+			var on = JSON.parse(tabon);
+			if(on.Lx == 1){
+				html += "<tr><td>"+on.Id+"</td><td><input value ='"+on.Xd+"'></input></td><td><input value ='"+on.Xn+"'></input></td><td><input value ='"+on.Zd+"'></input></td><td><input value ='"+on.Zn+"'></input></td><td><button id ='del'>删除</button>&nbsp;<nobr><button id ='up'>上移</button><nobr>&nbsp;<button id ='down'>下移</button></td></tr>";
+			}else{
+				html += "<tr><td>"+on.Id+"</td><td>"+on.Xd+"</td><td>"+on.Xn+"</td><td>"+on.Zd+"</td><td>"+on.Zn+"</td><td><nobr><button id ='del'>删除</button><nobr>&nbsp;<button id ='up'>上移</button><nobr>&nbsp;<button id ='down'>下移</button></td></tr>";
+			}
+		}
+		$("#tab").html(html);
+		
+	};
+	
+	function on(id){
+		document.getElementById(id).style.display = "block";	   
+	} 
+	function out(id){
+		document.getElementById(id).style.display = "none";
+	}
+	
+$(function(){
+	$("#logout_link").live("click",function(){
+		document.cookie = "userName=";
+		document.cookie = "passWord=";
+		document.cookie = "score=";
+		document.cookie = "ScoreRank=";
+		document.cookie = "tele=";
+		window.location.reload(true);
+	});
+	$("#cglogin").live("mouseout",function(){
+		$("#cglogin").style.display = "block";
+	});
+})
+
+</script>
+ 
+<body avalonctrl="root"> 
+<h1 class="page-main-title">高校院校大全-高考志愿汇</h1> 
+<input type="text" hidden="" id="navTopValue" value="findSchool"/> 
+<div class="hidden"> 
+	<a href="index.html"> <img src="./高考志愿汇/pro-tips-logo.png"/> </a> 
+</div> 
+<div class="g-head"> 
+	<div class="topNav clear"> 
+		<div class="content clear"> 
+			<ol class="topMenu fr"> 
+				<li class="topMenu-item"> 
+					<div class="act-vip"> 
+						<a href="" rel="nofollow" class="agent"> <span>回到首页</span> </a> 
+					</div>
+				</li> 
+				<li class="topMenu-item"> 
+					<div class="act-vip"> 
+						<a href="" rel="nofollow" class="agent"> <span>新手教程</span> </a> 
+					</div>
+				</li> 
+				<li class="topMenu-item"> 
+					<div class="act-vip"> 
+							<a href="" target="_blank" rel="nofollow" class="agent"> <span>快速通道</span> </a> 
+					</div>
+				</li> 
+				<li class="topMenu-item"> 
+					<div class="act-vip"> 
+						<span><a href="">开通</a></span> | 
+						<span class="btn-activate-vip">激活 VIP</span> 
+					</div>
+				</li> 
+				<li class="topMenu-item"> 
+					<div class="act-user"> 
+						<span id="login_link"><a href="login.html">登录/注册</a></span> 
+						<div class="drop user-menu" id ="cglogin" style = " width:100px">
+							<ul class="user-menu-item ">
+								<li class="logout"><a href="login.html">请先登录</a></li>
+							</ul>
+						</div> 
+					</div>
+				</li> 
+			</ol>
+		</div>
+	</div>
+	<div class="m-main-menu-wrap"> 
+		<div class="m-main-holder clear"> 
+			<div class="m-main-menu content"> 
+				<div class="logo-gkzyh fl"> 
+					<a href="index.html"><img class="logo" src="./高考志愿汇/logo-v7.png" /></a> 
+				</div> 
+				<div class="m-search"> 
+					<div class="m-input searchBar clear"> 
+						<input type="text" placeholder="搜索学校、专业" class="js-searchField" /> 
+						<i class="u-search js-searchIcon"></i> 
+						<a href="javascript:;" class="f-btn js-searchBtn ">搜索</a> 
+					</div> 
+				</div> 
+				<div class="m-time-end"></div> 
+			</div> 
+		</div> 
+		<div class="m-nav-warp clear"> 
+			<ul class="content"> 
+				<li class="index"><a href="index.html">首页</a></li> 
+				<li class="zhiyuan active"><a href="applysch.html">填志愿</a></li> 
+				<li class="findSchool"><a href="schoolinfo.html">找学校</a></li> 
+				<li class="findMajor"><a href="findMajor.html">找专业</a></li> 
+				<li class="rankingList"><a href="">排行榜</a></li> 
+				<li class="solve"><a href="solve.html">报考指导</a></li> 
+				<li class="product"><a href="login.html">个人中心</a></li> 
+			</ul> 
+		</div> 
+	</div> 
+</div> 
+
+
+  <div id="content" class="first-election-page"> 
+   <div id="pipe_1" > 
+    <div class="grid clearfix lock_stats"> 
+     <div class="left_cont"> 
+      <div class="menu_block"> 
+       <div class="title_box">
+        <i class="icon school_icon"></i>筛选学校
+       </div> 
+       <ul class="conditions_list select_box"> 
+        <li class="select_title" onmouseenter="on('d1')"  onmouseleave="out('d1')">
+			<a><i class="more_sj"></i>
+				<span class="txt_value">学校所在地</span>
+			</a>
+			<div class="r_cbox_wrap" style="top: -1;" id = "d1"> 
+          <div class="r_cbox_insbox" > 
+           <div class="unlimited_box"> 
+            <div class="a_cbox_wrap"> 
+             <div class="a_cbox">
+              <span class="cbox_txt active" value ="不限" id ="f">不限</span>
+             </div> 
+            </div> 
+           </div> 
+           <div class="scroll_box card-area-plug jspScrollable" style="padding: 0px; width: 752px; height:280px"> 
+            <div class="jspContainer" style="width: 752px; height: 280px;">
+             <div class="jspPane">
+               <div class="details_box clearfix" style ="width:100%" title = "xx"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value ="安徽省">安徽</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value ="北京市">北京</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                   
+                  <span class="cbox_txt place" value ="福建省">福建</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value ="甘肃省">甘肃</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value ="广东省">广东</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value ="广西">广西</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value="贵州省">贵州</span>
+                 </div> 
+                </div>
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value="海南省">海南</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="河北省">河北</span>
+                 </div> 
+                </div>           
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="河南省">河南</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value="黑龙江省">黑龙江</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value="湖北省">湖北</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value="湖南省">湖南</span>
+                 </div> 
+                </div>
+           
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value="吉林省">吉林</span>
+                 </div> 
+                </div>
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value="江苏省">江苏</span>
+                 </div> 
+                </div>
+			                  
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value="江西省">江西</span>
+                 </div> 
+                </div>
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt place" value="辽宁省">辽宁</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="内蒙古">内蒙古</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place"  value="宁夏">宁夏</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place"  value="青海省">青海</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="山东省">山东</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="山西省">山西</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="陕西省">陕西</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="上海市">上海</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="四川省">四川</span>
+                 </div> 
+                </div>
+				 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="天津市">天津</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="新疆">新疆</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt place" value="云南省">云南</span>
+                 </div> 
+                </div>
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">        
+                  <span class="cbox_txt place" value="浙江省">浙江</span>
+                 </div> 
+                </div>       
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">    
+                  <span class="cbox_txt place" value="重庆市">重庆</span>
+                 </div> 
+                </div>
+               </div>
+             </div>
+            </div>
+           </div> 
+          </div> 
+         </div></li>
+		<li class="select_title" style="display: list-item;"onmouseenter="on('d2')"  onmouseleave="out('d2')"> <a><i class="more_sj"></i><span>本科批</span></a> 
+         <div class="menu-bd-box" id ="d2"> 
+          <i class="left_line"></i> 
+          <ul class="menu-bd"> 
+           <li class ="a_1 cz" value="本科">本科批</li>
+           <li class ="a_1" value="专科">专科批</li>
+          </ul> 
+         </div></li> 
+       </ul> 
+      </div> 
+	  <br/>	  <br/>	  <br/>	  <br/>
+      <div class="menu_block"> 
+       <div class="title_box">
+        <i class="icon zhuanye_icon"></i>筛选专业
+       </div> 
+       <ul class="conditions_list select_box"> 
+        <li class="select_title" onmouseenter="on('d5')"  onmouseleave="out('d5')"> <a ><i class="more_sj"></i><span class="txt_value">按分类选专业</span></a> <span class="icon delete_icon" style="display: none;"></span> 
+         <div class="r_cbox_wrap" style="top: -27px;" id="d5"> 
+          <div class="r_cbox_insbox"> 
+           <div class="unlimited_box"> 
+            <div class="a_cbox_wrap"> 
+             <div class="a_cbox">
+              <span class="cbox_txt active" id ="f2">不限</span>
+             </div> 
+            </div> 
+           </div> 
+           <div class="scroll_box card-area-plug jspScrollable" style="overflow: hidden; padding: 0px; width: 752px;" tabindex="0"> 
+            <div class="jspContainer" style="overflow-y:auto;width: 752px; height: 445px;">
+             <div class="jspPane" style="padding: 0px; top: 0px; left: 0px; width: 742px;">
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt" title="哲学">哲学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+               
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">哲学类</span>
+                 </div> 
+                </div>
+         
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major" >人文科学试验班类</span>
+                 </div> 
+                </div>
+         
+               </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="经济学">经济学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">经济学类</span>
+                 </div> 
+                </div>
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">财政学类</span>
+                 </div> 
+                </div>
+            
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">经济与贸易类</span>
+                 </div> 
+                </div>
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">金融学类</span>
+                 </div> 
+                </div>
+                
+               </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="法学">法学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+           
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">社会学类</span>
+                 </div> 
+                </div>
+         
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">公安学类</span>
+                 </div> 
+                </div>
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">政治学类</span>
+                 </div> 
+                </div>
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">民族学类</span>
+                 </div> 
+                </div>
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">法学试验班类</span>
+                 </div> 
+                </div>
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">法学类</span>
+                 </div> 
+                </div>
+            
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">马克思主义理论类</span>
+                 </div> 
+                </div>
+              
+               </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="教育学">教育学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">教育学类</span>
+                 </div> 
+                </div>
+         
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">体育学类</span>
+                 </div> 
+                </div>
+                
+               </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="文学">文学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">新闻传播学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">外国语言文学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">中国语言文学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">文科试验班类</span>
+                 </div> 
+                </div>
+                </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="历史学">历史学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">历史学类</span>
+                 </div> 
+                </div>
+                </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="理学">理学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">化学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">统计学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">理科试验班类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">大气科学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">地质学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">海洋科学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">物理学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">生物科学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">地球物理学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">天文学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">数学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">地理科学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">心理学类</span>
+                 </div> 
+                </div>
+                </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="工学">工学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">水利类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">海洋工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">机械类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">电气类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">纺织类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">矿业类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">安全科学与工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">农业工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">计算机类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">化工与制药类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">仪器类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">生物医学工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">航空航天类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">兵器类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">测绘类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">林业工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">电子信息类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">公安技术类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">工科试验班类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">食品科学与工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">建筑类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">交通运输类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">环境科学与工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">材料类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">轻工类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">地质类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">能源动力类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">土木类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">自动化类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">生物工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">力学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">核工程类</span>
+                 </div> 
+                </div>
+                </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="农学">农学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">自然保护与环境生态类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">草学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">动物生产类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">林学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">水产类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">植物生产类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">动物医学类</span>
+                 </div> 
+                </div>
+                </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="医学">医学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">医学试验班类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">中西医结合类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">药学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">护理学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">基础医学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">医学技术类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">中药学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">中医学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">公共卫生与预防医学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">法医学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">口腔医学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">临床医学类</span>
+                 </div> 
+                </div>
+                </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="管理学">管理学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">物流管理与工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">工商管理类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">管理学试验班类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">电子商务类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">农业经济管理类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">工业工程类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">公共管理类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">旅游管理类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">图书情报与档案管理类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">管理科学与工程类</span>
+                 </div> 
+                </div>
+                </div> 
+              </div>
+              <div class="a_type clearfix"> 
+               <div class="classes_box"> 
+                <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt" title="艺术学">艺术学：</span>
+                 </div> 
+                </div> 
+               </div> 
+               <div class="details_box clearfix"> 
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">设计学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">戏剧与影视学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">艺术学理论类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                   
+                  <span class="cbox_txt major">美术学类</span>
+                 </div> 
+                </div>
+                 <div class="a_cbox_wrap"> 
+                 <div class="a_cbox">
+                  <span class="cbox_txt major">音乐与舞蹈学类</span>
+                 </div> 
+                </div>
+                </div> 
+              </div>
+             </div>
+            </div>
+           </div> 
+          </div> 
+          <i class="left_line" style="top: 26px;"></i> 
+         </div></li> 
+       </ul> 
+      </div> 
+     </div> 
+	 
+
+
+	 <div class="main_cont"> 
+      <div class="re-title"> 
+       <div class="txt">
+        为您找到在
+       </div> 
+       <div  id ="x1" class="cur" onclick = "change1()"> 
+        <!-- <em>0</em>所 -->学校专业
+       </div>
+       <div id = "x2" onclick = "change2()"> 
+        <!-- <em>0</em>个 -->候选志愿 
+       </div> <button id ="toExcel">导出我的志愿</button>
+      </div> 
+	  <div id ="zi_t" style = "display:none;">
+			<table id ="tab">
+				<tr>
+					<th width="8%">序号</th>
+					<th width="12%">学校代码</th>
+					<th width="22%">学校名称</th>
+					<th width="12%">专业代码</th>
+					<th width="22%">专业名称</th>
+					<th width="24%">操作<th>
+				</tr>
+					<tr>
+					<td>1</td>
+					<td>1</td>
+					<td>2</td>
+					<td>3</td>
+					<td>4</td>
+					<td><button id ="del">删除</button><nobr>
+					<button id ="up">上移</button><nobr>
+					<button id ="down">下移</button>
+					</td>
+				</tr>
+			</table>
+			<input type="button" value = "增添" class = "add" style="float:right;" name ="sx">
+			<button id="fill">智能填选</button>
+			<br>
+		</div>
+		<div id ="sx_t" style = "position: relative ">
+			<table id ="tab2">
+				<tr>
+					<th width="15%">学校代码</th>
+					<th width="20%">学校名称</th>
+					<th width="15%">专业代码</th>
+					<th width="20%">专业名称</th>
+					<th width="15%">录取概率</th>
+					<th width="15%">操作<th>
+				</tr>
+				<tr>
+					<td>0</td>
+					<td>1</td>
+					<td>2</td>
+					<td>3</td>
+					<td>4</td>
+					<td><input type="button" value = "加入候选" class = "add" name ="jr"></td>
+				</tr>
+
+				
+			</table>
+			<div class="gb_pages">
+			<a class = "first">首页</a>
+				<a name ="up">上一页</a>
+				<a class="gb_page_cur">1</a>
+				<a>2</a>
+				<a>3</a>
+				<a>4</a>
+				<a>5</a>
+				<a name ="down">下一页</a>
+			<a class = "last">末页</a>
+			</div>
+		</div>
+	  </div> 
+     </div> 
+    </div> 
+    
+   </div> 
+  </div> 
+  
+<script>
+	function change1(){
+		var c1= document.getElementById("x1");
+		var c2= document.getElementById("x2");
+		var dt = c1.parentNode.nextElementSibling;
+		var dt2 = c1.parentNode.nextElementSibling.nextElementSibling;
+		c1.className = "cur";
+		c2.className ="";
+		dt.style.display = "none";
+		dt2.style.display = "block";
+	}
+	
+	function change2(){
+		var c1= document.getElementById("x1");
+		var c2= document.getElementById("x2");
+		var dt = c1.parentNode.nextElementSibling;
+		var dt2 = c1.parentNode.nextElementSibling.nextElementSibling;
+		c2.className = "cur";
+		c1.className ="";
+		dt.style.display = "block";
+		dt2.style.display = "none";
+	}
+	
+	function GetRowData(row){//输入行 转换为json
+		var rowData = {}; //创建一个空对象
+        for (let j = 0; j < row.length-1; j++) {  //遍历该行的所有单元格
+			let key;
+			if(row.eq(j).text()==""){
+				value = row.eq(j).find("input").val();
+			}else{
+				value = row.eq(j).text();
+			}
+			switch(j){
+				case 0: 
+					key = "id";
+					break;
+				case 1: 
+					key = "schno";
+					break;
+				case 2: 
+					key = "schname";
+					break;
+				case 3: 
+					key = "zyno";
+					break;
+				case 4: 
+					key = "zyname";
+					break;
+			}
+            rowData[key] = value; //为对象添加属性和添加值
+            }
+		return rowData;  //返回该对象
+        }
+
+        
+	
+	function GetTableData(table) {//输入表 转换为json数组
+        var tableData = new Array(); //创建数组
+        //alert("行数：" + table.find("tr").length); //弹出总行数
+        for (var i = 1; i < table.children("tr").length; i++) {  //遍历每行
+            tableData.push(GetRowData(table.find("tr").eq(i).find("td"))); //传递每行,
+        }  
+		return tableData;
+    }
+	
+	$(function(){//将tab导出成Excel
+		$("#toExcel").click(function(){
+			var jsonData =GetTableData($("#tab>tbody"));
+			let str = `序号,学校代码,学校名称,专业代码,专业名称\n`;
+			//增加\t为了不让表格显示科学计数法或者其他格式
+			for(let i = 0 ; i < jsonData.length ; i++ ){
+				for(let item in jsonData[i]){
+					str+=`${jsonData[i][item] + '\t'},`;     
+				}
+				str+='\n';
+			}
+			//encodeURIComponent解决中文乱码
+			let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+			//通过创建a标签实现
+			let link = document.createElement("a");
+			link.href = uri;
+			//对下载的文件命名
+			link.download =  "我的志愿表.csv";
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		})
+	})
+	
+	$(function () {//增添和加入候选
+		$(".add").live("click",function (){
+			if($(this).attr("name")=="sx"){//增添
+			var tr = document.createElement("tr");
+			var td = document.createElement("td");
+			td.innerHTML = $("#tab tr").length;
+			tr.append(td);
+			for(var i = 0;i<4;i++){
+				var td = document.createElement("td");
+				var input = document.createElement("input");
+				input.type = "type";
+				td.append(input);
+				tr.append(td);
+			}
+			var bu = document.createElement("td");
+			bu.innerHTML = '<td><nobr><button id ="del">删除</button>&nbsp;<nobr><button id ="up">上移</button>&nbsp;<nobr><button id ="down">下移</button></td>';
+			tr.append(bu);
+			$("#tab").append(tr);
+			}else{//加入候选
+				var ta = document.getElementById("tab");
+				var a = $(this).parent().parent().index();
+				var tr = $("#tab2 tr").eq(a).clone();
+				tr.eq(0).find("td").eq(4).remove();
+				tr.eq(0).find("td").eq(4).remove();
+				var td = document.createElement("td");
+				//tr.append(td);
+				td.innerHTML = $("#tab tr").length;
+				tr.prepend(td);
+				tr.append($('<td><nobr><button id ="del">删除</button>&nbsp;<nobr><button id ="up">上移</button>&nbsp;<nobr><button id ="down">下移</button></td>'));
+				$("#tab").append(tr);
+			}
+		});
+
+	})
+			
+	$(function () {
+		$("#del").live("click",function (){//删除按钮
+			$(this).parentsUntil("tr").parent().remove();
+			for(let i = 1 ;i<$("#tab tr").length ; i++){
+				var tr = $("#tab tr").eq(i);
+				tr.find("td").eq(0).remove();
+				var td = document.createElement("td");
+				td.innerHTML = i;
+				tr.prepend(td);
+			}
+		});
+		
+		$("#clearAll").live("click",function(){//清空按钮
+			$("#tab").html("<tr><th width='8%'>序号</th><th width='12%'>学校代码</th><th width='22%'>学校名称</th><th width='12%'>专业代码</th><th width='22%'>专业名称</th><th width='24%'>操作<button id ='clearAll'>清空</button><th></tr>");
+		})
+	})
+
+	$(function () {//上移按钮
+		$("#up").live("click",function (){
+			var self = $(this).parent().parent().parent().index()+1;
+			var up = self-1;
+			if(up==1){
+				return;
+			}
+	//更改序号
+			var tr = $("#tab tr").eq(self-1);
+			tr.find("td").eq(0).remove();
+			var td = document.createElement("td");
+			td.innerHTML = up-1;
+			tr.prepend(td);
+			var tr = $("#tab tr").eq(up-1);
+			tr.find("td").eq(0).remove();
+			var td2 = document.createElement("td");
+			td2.innerHTML = self-1;
+			tr.prepend(td2);
+			$("#tab tr:nth-child(" + up + ")").insertAfter($("#tab tr:nth-child(" + self + ")"));
+		});
+	})
+			
+	$(function () {//下移按钮
+		$("#down").live("click",function () {
+			var self = $(this).parent().parent().parent().index()+1;
+			var down = self+1;
+	//更改序号
+			var tr = $("#tab tr").eq(self-1);
+			tr.find("td").eq(0).remove();
+			var td = document.createElement("td");
+			td.innerHTML = down-1;
+			tr.prepend(td);
+			var tr = $("#tab tr").eq(down-1);
+			tr.find("td").eq(0).remove();
+			var td2 = document.createElement("td");
+			td2.innerHTML = self-1;
+			tr.prepend(td2);
+			$("#tab tr:nth-child(" + self + ")").insertAfter($("#tab tr:nth-child(" + down + ")"));
+		});
+	})
+</script>
+<script>
+var x = new Array("_%");//存放学校
+var y = new Array("_%");//存放专业
+var lenghtx = 1;
+var lenghty = 1;
+var mdata = {//请求后端的参数
+	"schpro": x,
+	"schlevelname": "本科",
+	"zy":y,
+	"pageno":1,
+	"username":getCookie("userName")
+}
+var p = 0;
+var upLoad = {
+	method: function(mdata){
+	$.ajax({
+		type: "POST",//请求方式
+		url: '/applysch.html/action',//指定的链接
+		traditional: true,
+		data: mdata,
+		dataType: "JSON",//或"TEXT" //请求返回的数据类型
+		async:false,  //是否需要同步
+		success: function (data) { 
+			$("#tab2").html('<th width="15%">学校代码</th><th width="20%">学校名称</th><th width="15%">专业代码</th><th width="20%">专业名称</th><th width="15%">录取概率</th><th width="15%">操作<th>');
+			$.each(data,function(key,value){
+				$("#tab2").append('<tr><td>'+value.schcode+'</td><td>'+value.schname+'</td><td>'+value.zycode+'</td><td>'+value.zyname+'</td><td>'+value.forecast+'</td><td><input type="button" value = "加入候选" class = "add" name ="jr"></td></tr>');
+				p = Math.ceil(value.sum/20);
+			});
+			var pages ="";
+			if(mdata.pageno != 1){
+				pages+='<a class = "first">首页</a>';
+			}
+			pages+='<a name="up">上一页</a>';
+			if(p<5){//根据后端传的页数写页码
+				for(var j =1;j<=p;j++){
+					if(mdata.pageno==j){
+						pages+="<a class='gb_page_cur'>"+j+"</a>";
+					}else{
+						pages+="<a>"+j+"</a>";
+					}
+				}
+			}else{
+				if(mdata.pageno <= 3){
+					for(var j =1;j<=5;j++){
+						if(mdata.pageno==j){
+							pages+="<a class='gb_page_cur'>"+j+"</a>";
+						}else{
+							pages+="<a>"+j+"</a>";
+						}
+					}
+				}else if(mdata.pageno>p-3){
+					for(var j =p-4;j<=p;j++){
+						if(mdata.pageno==j){
+							pages+="<a class='gb_page_cur'>"+j+"</a>";
+						}else{
+							pages+="<a>"+j+"</a>";
+						}
+					}
+				}else{
+					for(var j =mdata.pageno-2;j <= mdata.pageno+2;j++){
+						if(mdata.pageno==j){
+							pages+="<a class='gb_page_cur'>"+j+"</a>";
+						}else{
+							pages+="<a>"+j+"</a>";
+						}
+					}
+				}
+			}
+			pages+='<a name ="down">下一页</a>';
+			if(mdata.pageno != p){
+				pages+='<a class = "last">末页</a>';
+			}
+			$(".gb_pages").html(pages);
+		}
+	});
+	}
+}
+
+
+	$(function () {
+		upLoad.method(mdata);
+		$(".cbox_txt").live("click",function () {
+			if($(this).attr("id")=="f" && x.indexOf("_%")<0){
+				x = ["_%"];
+				lenghtx =1;
+				$(".place").removeClass("active");
+				$("#f").addClass("active");
+			}else if($(this).attr("id")=="f2" && y.indexOf("_%")<0){
+				y = ["_%"];
+				lenghty =1;
+				$(".major").removeClass("active");
+				$("#f2").addClass("active");			
+			}else if($(this).parent().parent().parent().attr("title")=="xx"){//判断是否为学校
+				var t =	$(this).attr("value");
+				if(x.indexOf(t)<0){//判断是否已经点击
+					x.push(t);
+					lenghtx++;
+					$(this).addClass("active");
+					if(x.indexOf("_%")>=0){//判断不限是否已经在内
+						x.splice(x.indexOf("_%"),1);lenghtx--;
+						$("#f").removeClass("active");
+					}
+				}else{
+					x.splice(x.indexOf(t),1);
+					lenghtx--;
+					$(this).removeClass("active");
+					if(lenghtx==0){//如果全部都没选中
+						x.push("_%");lenghtx++;
+						$("#f").addClass("active");
+					}
+				}
+			}else{
+				var t =$(this).text();
+				if(y.indexOf(t)<0 && $(this).attr("title")==null){
+					//判断是否已经点击和小标题不算
+					y.push(t);
+					lenghty++;
+					$(this).addClass("active");
+					if(y.indexOf("_%")>=0){
+						//判断"不限"是否已经在内
+						y.splice(y.indexOf("_%"),1);lenghty--;
+						$("#f2").removeClass("active");
+					}
+				}else if($(this).attr("title")==null){
+					y.splice(y.indexOf(t),1);
+					lenghty--;
+					$(this).removeClass("active");
+					if(lenghty==0){
+						//如果全部都没选中
+						y.push("_%");lenghty++;
+						$("#f2").addClass("active");
+					}
+				}
+			}
+			mdata.pageno=1;
+			upLoad.method(mdata);
+		});
+
+
+		$(".a_1").click(function () {
+			$(this).addClass("cz");
+			$(this).siblings().removeClass("cz");
+			data.schlevelname = $(this).attr("value");
+			mdata.pageno=1;
+			upLoad.method(mdata);
+		});
+
+
+		$(".gb_pages a").live("click",function(){
+			if($(this).attr("class")=="last"){
+				mdata.pageno = p;
+			}else if($(this).attr("class")=="frist"){
+				mdata.pageno = 1;
+			}else if($(this).attr("name")=="up" && mdata.pageno>1){
+				mdata.pageno--;
+			}else if($(this).attr("name")=="down" && mdata.pageno<p){
+				mdata.pageno++;
+			}else if(mdata.pageno != parseInt($(this).text())){
+				mdata.pageno = parseInt($(this).text());
+			}else{
+				return ;
+			}
+			upLoad.method(mdata);
+		});
+
+		
+		$("#fill").live("click",function(){
+			if($("#tab tr").length<=80){
+				$.ajax({
+					type: "POST",//请求方式
+					url: '/applysch.html/actionAI',//指定的链接
+					traditional: true,
+					data: {
+						existing :80-$("#tab tr").length+1,
+						username :getCookie("userName")
+					},
+					dataType: "JSON",//或"TEXT" //请求返回的数据类型
+					async:false,  //是否需要同步
+					success: function (data){
+						 $.each(data,function(key,value){
+							$("#tab").append('<tr><td>'+$("#tab tr").length+'</td><td>'+value.schcode+'</td><td>'+value.schname+'</td><td>'+value.zycode+'</td><td>'+value.zyname+'</td><td><button id ="del">删除</button><nobr><button id ="up">上移</button><nobr><button id ="down">下移</button></td></tr>');
+						});
+					}
+				});
+			}
+		});
+		
+		
+	});
+</script>
+<div class="footer"> 
+     <div class="content"> 
+      <div class="clear"> 
+       <div class="footer-left"> 
+        <div class="clear"> 
+         <div class="footer-list"> 
+          <h3>VIP</h3> 
+          <ul> 
+           <li> <a href="" class="js-buy">购买VIP</a> </li> 
+           <li><a href="javascript:;" class="btn-activate-vip">激活</a></li> 
+          </ul> 
+         </div> 
+         <div class="footer-list"> 
+          <h3>常见问题</h3> 
+          <ul> 
+           <li><a href="" rel="nofollow">产品使用</a></li> 
+           <li><a href="" rel="nofollow">会员充值</a></li> 
+           <li><a href="" rel="nofollow">功能介绍</a></li>  
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+          <ul> 
+		  <h3>关于我们</h3>
+           <li><a href="" rel="nofollow">团队介绍</a></li> 
+           <li><a href="" rel="nofollow">联系我们</a></li> 
+           <li><a href="" rel="nofollow">商务合作</a></li> 
+           <li><a href="" rel="nofollow">服务条款</a></li> 
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+		 <h3>关注我们</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云订阅号</h3>
+				</li>
+			</ul> 
+			
+		 </div> 
+		 <div class="footer-list"> 
+			<h3>~</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云服务号</h3>
+				</li>
+			</ul> 
+		 </div> 
+
+        </div> 
+       </div> 
+       <div class="footer-right"> 
+        <h3>来电咨询:</h3> 
+        <p class="phone">400-xxx-xxxx</p> 
+        <p>期待为您提供帮助</p> 
+        <p>本服务只提供参考，不代表一定成功</p> 
+       </div> 
+      </div> 
+      <div class="service-tel">
+        客服热线：13456789
+      </div> 
+     </div> 
+</div>
+ </body>
+</html>

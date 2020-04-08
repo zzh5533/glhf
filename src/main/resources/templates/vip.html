@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <title>高考志愿汇-VIP</title> 
+  <link rel="stylesheet" href="./高考志愿汇/zy.css" /> 
+  <script src="./高考志愿汇/jquery.min.js"></script>  
+  <link rel="stylesheet" href="./高考志愿汇/ipin-ico.css" /> 
+  <link rel="stylesheet" href="./高考志愿汇/base.css" /> 
+  <link rel="stylesheet" href="./高考志愿汇/school.css" /> 
+  <style>
+  th{
+    background: #fcfefd;
+    border-bottom: none;
+    font-size: 14px;
+	}
+  </style>
+ </head> 
+ <body class="ch-sticky"> 
+  <h1 class="page-main-title">高考志愿汇</h1> 
+  <input type="text" hidden="" id="navTopValue" value="findSchool" /> 
+  <div class="hidden"> 
+   <a href="index.html"> <img src="./高考志愿汇/pro-tips-logo.png" /> </a> 
+  </div> 
+  <div class="g-head"> 
+   <div class="topNav clear"> 
+    <div class="content clear"> 
+     <ol class="topMenu fr"> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" rel="nofollow" class="agent"> <span>回到首页</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" rel="nofollow" class="agent"> <span>新手教程</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" target="_blank" rel="nofollow" class="agent"> <span>快速通道</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <span><a href="">开通</a></span> | 
+        <span class="btn-activate-vip">激活 VIP</span> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-user"> 
+						<span id="login_link"><a href="login.html">登录/注册</a></span> 
+						<div class="drop user-menu" id ="cglogin" style = " width:100px">
+							<ul class="user-menu-item ">
+								<li class="logout"><a href="login.html">请先登录</a></li>
+							</ul>
+						</div> 
+					</div>
+	</li> 
+     </ol> 
+    </div> 
+   </div> 
+   <div class="m-main-menu-wrap"> 
+    <div class="m-main-holder clear"> 
+     <div class="m-main-menu content"> 
+      <div class="logo-gkzyh fl">
+       <a href="index.html"><img class="logo" src="./高考志愿汇/logo-v7.png" /></a> 
+      </div> 
+      <div class="m-search"> 
+       <div class="m-input searchBar clear"> 
+        <input type="text" placeholder="搜索学校、专业" class="js-searchField" /> 
+        <i class="u-search js-searchIcon"></i> 
+        <a href="javascript:;" class="f-btn js-searchBtn ">搜索</a> 
+       </div> 
+      </div> 
+      <div class="m-time-end"></div> 
+     </div> 
+    </div> 
+    <div class="m-nav-warp clear"> 
+     <ul class="content"> 
+		<li class="index"><a href="index.html">首页</a></li> 
+		<li class="zhiyuan"><a href="applysch.html">填志愿</a></li> 
+		<li class="findSchool"><a href="schoolinfo.html">找学校</a></li> 
+		<li class="findMajor"><a href="findMajor.html">找专业</a></li> 
+		<li class="rankingList"><a href="">排行榜</a></li> 
+		<li class="solve"><a href="solve.html">报考指导</a></li> 
+		<li class="product active"><a href="login.html">个人中心</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="section-head">
+            <div class="model-section-head">
+                <div class="row">
+                    
+
+<style>
+.model-section-head {
+    height: 670px;
+    background: url(高考志愿汇/vip.png);
+}
+.row {
+    position: relative;
+    width: 1180px;
+    margin: 0 auto;
+}
+.nav-collapse {
+	padding:100px 0px;
+    color: #fff;
+}
+.section-head h2 {
+    text-align: left;
+	font-size: 42px;
+    font-weight: normal;
+    padding: 30px 0;
+    letter-spacing: 1px;
+    line-height: 42px;
+}
+.nav-collapse .summary {
+    width: 660px;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+.nav-member {
+    margin-top: 50px;
+    font-style: normal;
+}
+.nav-member .buy-member {
+	display: inline-block;
+    margin-bottom: 10px;
+    background-color: #fffc01;
+    border-color: #fffc01;
+    font-weight: bolder;
+    font-style: normal;
+    color: #666;
+	padding: 0 40px;
+	text-align: center;
+    line-height: 40px;
+	font-size: 16px;
+}
+.section-sjjs-box {
+    
+	text-align: center;
+    width: 1200px;
+    height: 130px;
+    background: #fff;
+    position: relative;
+}
+.section-sjjs-box .sjjs-item {
+	margin-right: 0;
+    float: left;
+    margin-right: 20px;
+    width: 285px;
+    height: 130px;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+}
+
+
+.oh {
+    overflow: hidden;
+}
+
+.subAD {
+    border-bottom: 1px solid #dfdfdf;
+    background-color: #f0f0f0;
+    width: 100%;
+}
+.range {
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+.tc {
+    text-align: center;
+}
+.cf {
+    clear: both;
+}
+.fs24 {
+    font-size: 24px;
+}
+.ml10 {
+    margin-left: 10px;
+}
+.mb50 {
+    margin-bottom: 50px;
+}
+.mt50 {
+    margin-top: 50px;
+}
+.Cardlist ul li {
+    width: 350px;
+    background-color: #fff;
+    margin-left: 35px;
+    float: left;
+    margin-bottom: 50px;
+    border-radius: 10px;
+    height: 380px;
+    overflow: hidden;
+}
+element.style {
+    color: #CBA919;
+}
+.fs16 {
+    font-size: 16px;
+}
+</style>
+                    <div class="nav-collapse">
+                        <h2>智能志愿</h2>
+                        <div class="summary">在往年高考录取分数基础上，通过基于大数据分析的独特算法，根据考生预估的高考分数或位次，模拟筛选高校及专业，为考生填报志愿提供参考。
+                        </div>
+                    </div>
+                    <div class="nav-member">
+                        <a class="button buy-member disabled" href="applysch.html"> 填报志愿 </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+<div class="" style="width:100%; position:relative;background-color: #ffffff;padding-bottom: 50px;padding:50px 250px; text-align:center" >
+        <div class="section" style="margin-top:0;">
+            <div class="section-sjjs-box">
+                <div class="sjjs-item"><img src="高考志愿汇/img/js01.png"></div>
+                <div class="sjjs-item"><img src="高考志愿汇/img/js02.png"></div>
+                <div class="sjjs-item"><img src="高考志愿汇/img/js03.png"></div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="subAD oh">
+	<div class="range">  
+		<h1 class="fs24 tc ml10 mt50 mb50">普通用户功能</h1>
+		<div class="Cardlist mt20">
+			<ul class="mb50">
+				<li>
+					<img src="高考志愿汇/img/step01.jpg" class="caseListImg">
+					<h3 class="c666 fs16 tc mt10" style="color:#CBA919">1.学校专业查询</h3>
+					<p class="c666 fs14 tl m20">网站将学校专业进行了整理，便于学生查询；</p>
+				</li>
+        
+        <!-- <li> -->
+			<!-- <img src="" class="caseListImg"> -->
+		 <!-- <h3 class="c666 fs16 tc mt10" style="color:#CBA919">2.大学、专业录取分数查询</h3> -->
+          <!-- <p class="c666 fs14 tl m20">网站将各个学校的录取线进行整合； -->
+          <!-- </p> -->
+       
+		<!-- </li> -->
+				<li>
+					<img src="高考志愿汇/img/step02.jpg" class="caseListImg">
+					<h3 class="c666 fs16 tc mt10" style="color:#CBA919">2.专家老师分析</h3>
+					<p class="c666 fs14 tl m20">学生可以查看部分老师专家的视频或文章分析；</p>
+				</li>
+				<li>
+					<img src="高考志愿汇/img/step03.jpg" class="caseListImg">
+					<h3 class="c666 fs16 tc mt10" style="color:#CBA919">3.模拟填报志愿</h3>
+					<p class="c666 fs14 tl m20">学生可以在网站进行模拟填报志愿；</p>
+				</li>
+			</ul>
+		</div>
+		<h1 class="cf fs24 tc ml10 mt50 mb50">VIP功能</h1>
+		<div class="Cardlist mt20">
+			<ul class="mb50">
+				<li>
+					<img src="高考志愿汇/img/step04.jpg" class="caseListImg">
+					<h3 class="c666 fs16 tc mt10" style="color:#CBA919">1.兴趣性格测评</h3>
+					<p class="c666 fs14 tl m20">网站对vip用户进行职业兴趣、性格、能力倾向测评，对其兴趣、性格和能力倾向进行分析，根据测评结果了解适合自身选择的大学专业类型；</p>
+				</li>
+				<li>
+					<img src="高考志愿汇/img/step05.jpg" class="caseListImg">
+					<h3 class="c666 fs16 tc mt10" style="color:#CBA919">2.学校专业录取概率预测</h3>
+					<p class="c666 fs14 tl m20">网站通过对学生成绩与次位号进行分析运算得出心仪学校的录取概率；</p>
+				</li>
+				<li>
+					<img src="高考志愿汇/img/step06.jpg" class="caseListImg">
+					<h3 class="c666 fs16 tc mt10" style="color:#CBA919">3.专业导师一对一分析</h3>
+					<p class="c666 fs14 tl m20">网站对vip用户提供专业导师进行一对一分析填报志愿；</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+  <div class="footer"> 
+     <div class="content"> 
+      <div class="clear"> 
+       <div class="footer-left"> 
+        <div class="clear"> 
+         <div class="footer-list"> 
+          <h3>VIP</h3> 
+          <ul> 
+           <li> <a href="" class="js-buy">购买VIP</a> </li> 
+           <li><a href="javascript:;" class="btn-activate-vip">激活</a></li> 
+          </ul> 
+         </div> 
+         <div class="footer-list"> 
+          <h3>常见问题</h3> 
+          <ul> 
+           <li><a href="" rel="nofollow">产品使用</a></li> 
+           <li><a href="" rel="nofollow">会员充值</a></li> 
+           <li><a href="" rel="nofollow">功能介绍</a></li>  
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+          <ul> 
+		  <h3>关于我们</h3>
+           <li><a href="" rel="nofollow">团队介绍</a></li> 
+           <li><a href="" rel="nofollow">联系我们</a></li> 
+           <li><a href="" rel="nofollow">商务合作</a></li> 
+           <li><a href="" rel="nofollow">服务条款</a></li> 
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+		 <h3>关注我们</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云订阅号</h3>
+				</li>
+			</ul> 
+			
+		 </div> 
+		 <div class="footer-list"> 
+			<h3>~</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云服务号</h3>
+				</li>
+			</ul> 
+		 </div> 
+
+        </div> 
+       </div> 
+       <div class="footer-right"> 
+        <h3>来电咨询:</h3> 
+        <p class="phone">400-xxx-xxxx</p> 
+        <p>期待为您提供帮助</p> 
+        <p>本服务只提供参考，不代表一定成功</p> 
+       </div> 
+      </div> 
+      <div class="service-tel">
+        客服热线：13456789
+      </div> 
+     </div> 
+</div>
+ </body>
+</html>

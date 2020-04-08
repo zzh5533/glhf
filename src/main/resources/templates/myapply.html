@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="./高考志愿汇/ipin-ico.css">
+<link rel="stylesheet" href="./高考志愿汇/base.css">
+    <title>我的志愿表</title>
+    <link rel="stylesheet" href="./高考志愿汇/personal.css">
+	<script src="./高考志愿汇/jquery.min.js"></script>
+<script src="https://how2j.cn/study/vue.min.js"></script>
+<style>
+.ucenter-body .fun-wrap .fun-caption {
+    font-size: 24px;
+    line-height: 24px;
+    border-left: 3px solid #00aff0;
+    padding-left: 15px;
+    margin-bottom: 20px;
+}
+.ucenter-body .fun-wrap .fun-section .fun-content {
+    padding-bottom: 45px;
+}
+.ucenter-body .fun-wrap .fun-section .fun-content .mod-area .mod-row .submit-btn {
+    margin-top: 20px;
+    width: 120px;
+    height: 45px;
+    font-size: 16px;
+    display: inline-block;
+    color: #fff !important;
+    text-align: center;
+    border: 1px solid #00aff0;
+    background-color: #00aff0;
+	line-height: 45px;
+}
+ .btn{
+    cursor: pointer;
+	color: #00aff0;
+}
+a {
+cursor: pointer;
+    color: #333;
+    border: none;
+    text-decoration: none;
+    font-family: arial,"microsoft yahei",verdana, simsun;
+}
+.ucenter-body .fun-wrap .fun-section .fun-title .title-wrap .title-label {
+    display: inline-block;
+    width: 130px;
+}
+.fun-title {
+    position: relative;
+    color: #333;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 20px 0 14px;
+    background-color: #f5f5f5;
+}
+.ucenter-body .fun-wrap .fun-section {
+    padding: 0px 20px 10px;
+}
+.ui-dropList-option a {
+    display: table-cell;
+    color: #333;
+    padding: 0 15px;
+    font-size: 14px;
+    line-height: 1.2;
+    height: 40px;
+    vertical-align: middle;
+}
+a:hover{
+	color:#00aff0;
+}
+.name{
+	font-size:15px;
+	width:30px;
+	text-align:center
+}
+button{
+    display: inline-block;
+    width: 100px;
+    height: 100%;
+    line-height: 36px;
+    padding: 0 16px;
+    border: none;
+    border-radius: 2px;
+    background: #00aff0;
+    color: #fff;
+    font-size: 14px;
+    vertical-align: middle;
+    outline: 0;
+    cursor: pointer;
+    overflow: visible;
+}
+</style>
+<script>
+function getCookie(name) {
+	var strCookie = document.cookie;
+	var arrCookie = strCookie.split("; ");
+	for (var i = 0; i < arrCookie.length; i++) {
+		var arr = arrCookie[i].split("=");
+		if (arr[0] == name) return arr[1];
+	}
+	return "";
+}
+window.onload = function(){
+	var islogin = getCookie("userName");
+	var isscore = getCookie("score");
+	var istele = getCookie("tele");
+	if(islogin !==''){
+		document.getElementById("login_link").innerHTML =islogin;
+		$("#cglogin").html('<ul class="user-menu-item "><li class="logout"><a>我的志愿表</a></li><li class="logout"><a>我的信息</a></li><li class="logout"><a>帐号安全</a></li><li class="logout"><a id="logout_link">退出登录</a></li></ul>');
+		$(".product").html('<a href="myapply.html">个人中心</a>');
+		$(".zhiyuan").html('<a href="myspace.html">填志愿</a>');
+		if(isscore !==''){
+			$(".zhiyuan").html('<a href="applysch.html">填志愿</a>');
+		}
+		if(istele !==''){
+			$(".title-txt").html(istele);
+			$(".js-change-mobile").html("更改手机");
+		}
+	}
+}
+
+$(function(){
+	$("#logout_link").live("click",function(){
+		document.cookie = "userName=";
+		document.cookie = "passWord=";
+		document.cookie = "score=";
+		document.cookie = "ScoreRank=";
+		document.cookie = "tele=";
+		window.location.reload(true);
+	});
+	$("#cglogin").live("mouseout",function(){
+		$("#cglogin").style.display = "block";
+	});
+})
+</script>
+
+<script>
+	$(function(){
+		$("#apply").click(function(){
+			$("#applyList").css("display","block");
+			$("#myMessage").css("display","none");
+		});
+		$("#message").click(function(){
+			$("#applyList").css("display","none");
+			$("#myMessage").css("display","block");
+		});
+		$("#city").click(function(){
+		
+			if($(this).attr("class") == "ui-input-field ui-drop-wrap ui-fold"){
+				$(this).attr("class","ui-input-field ui-drop-wrap ui-unfold");
+			}else{
+				$(this).attr("class","ui-input-field ui-drop-wrap ui-fold");
+			}
+			
+		});
+		$("#major").click(function(){
+			if($(this).attr("class") == "ui-input-field ui-drop-wrap ui-fold"){
+				$(this).attr("class","ui-input-field ui-drop-wrap ui-unfold");
+			}else{
+				$(this).attr("class","ui-input-field ui-drop-wrap ui-fold");
+			}
+		});
+		$("#major_id").click(function(){
+			if($(this).attr("class") == "ui-input-field ui-drop-wrap ui-fold"){
+				$(this).attr("class","ui-input-field ui-drop-wrap ui-unfold");
+			}else{
+				$(this).attr("class","ui-input-field ui-drop-wrap ui-fold");
+			}
+		});
+
+	})
+	function onthis(a){
+		$(".ui-input-txt")[1].innerHTML = $(a).children().text();
+	}
+	function on(a){
+		$(".ui-input-txt")[2].innerHTML = $(a).children().text();
+		var index = $(a).index();
+		$(".ui-input-txt")[3].innerHTML=$("ol[name ="+index+"]").children().eq(0).children().text();
+		$("ol[name ="+index+"]").show();
+		$("ol[name ="+index+"]").siblings().hide();
+	}
+</script>
+</head>
+<body avalonctrl="root">
+ <h1 class="page-main-title">高校院校大全-高考志愿汇</h1> 
+  <input type="text" hidden="" id="navTopValue" value="findSchool" /> 
+  <div class="hidden"> 
+   <a href="index.html"> <img src="./高考志愿汇/pro-tips-logo.png" /> </a> 
+  </div> 
+  <div class="g-head"> 
+   <div class="topNav clear"> 
+    <div class="content clear"> 
+     <ol class="topMenu fr"> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" rel="nofollow" class="agent"> <span>回到首页</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" rel="nofollow" class="agent"> <span>新手教程</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" target="_blank" rel="nofollow" class="agent"> <span>快速通道</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <span><a href="">开通</a></span> | 
+        <span class="btn-activate-vip">激活 VIP</span> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-user"> 
+        <span id="login_link"><a href="login.html">登录/注册</a></span> 
+       </div> </li> 
+     </ol> 
+    </div> 
+   </div> 
+   <div class="m-main-menu-wrap"> 
+    <div class="m-main-holder clear"> 
+     <div class="m-main-menu content"> 
+      <div class="logo-wmzy fl"> 
+       <a href="index.html"><img class="logo" src="./高考志愿汇/logo-v7.png" /></a> 
+      </div> 
+      <div class="m-search"> 
+       <div class="m-input searchBar clear"> 
+        <input type="text" placeholder="搜索学校、专业" class="js-searchField" /> 
+        <i class="u-search js-searchIcon"></i> 
+        <a href="javascript:;" class="f-btn js-searchBtn ">搜索</a> 
+       </div> 
+      </div> 
+      <div class="m-time-end"></div> 
+     </div> 
+    </div> 
+    <div class="m-nav-warp clear"> 
+     <ul class="content"> 
+		<li class="index"><a href="index.html">首页</a></li> 
+		<li class="zhiyuan"><a href="applysch.html">填志愿</a></li> 
+		<li class="findSchool"><a href="schoolinfo.html">找学校</a></li> 
+		<li class="findMajor"><a href="findMajor.html">找专业</a></li> 
+		<li class="rankingList"><a href="">排行榜</a></li> 
+	    <li class="solve"><a href="solve.html">报考指导</a></li> 
+		<li class="product active"><a href="login.html">个人中心</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+  </div> 
+<div class="collect collection" style="min-height:485px;">
+<div class="content">
+	<div class="layout-left clear"></div>
+
+<div class="coll-side">
+	<h3>工具栏</h3>
+	<ul>
+		<li id="apply"><a >我的志愿表</a></li>
+		<li><a href="schoolinfo.html">院校大全</a></li>
+		<li><a href="applysch">专业大全</a></li>
+		<li><a href="">预测录取概率</a></li>
+		<li id = "message"><a >我的信息</a></li>
+		<li><a href="">我的收藏</a></li>
+	</ul>
+</div>
+	<div class="coll-main" style = "display:none" id = "applyList">
+		<div class="mainc">
+			<div class="coll-nav">
+				<h3>已有0份志愿表</h3>
+				<div class="coll-add-btn">
+					<div>
+						<i class="ipo ipin-ico-iconadd"></i>添加志愿表
+					</div>
+					<div class="nav-pop hide">
+						<a href=""><i class="img"></i>智能填报<span class="coll-vip"></span></a>
+						<a href=""><i class="img img5"></i>手动填报</a>
+					</div>
+				</div>
+			</div>
+			<div class="coll-volunteer hide">
+				<ul></ul>
+			</div>
+			<div class="coll-not">
+				<h3><i class="ipo ipin-ico-icontips"></i></h3>
+				<p>你还没有志愿表</p>
+				<h5>你可以<a>填报志愿</a></h5>
+			</div>
+		</div>
+	</div>
+				
+	<div class="coll-main" id = "myMessage">
+		<div class="ucenter-body">
+				<div class="fun-wrap">
+				<div class="fun-caption">我的高考</div>
+				<div class="fun-section">
+					<div class="fun-content">
+						<div class="mod-area unpadding-h unpadding-v">
+							<div class="mod-row">
+								<div class="ui-input-field ui-drop-wrap ui-fold" data-key="enroll_type">
+									<span class="ui-input-txt">普通招生</span>
+									<i class="ui-dir"></i>
+									<div class="ui-drop-panel ui-dropList-option js-enrollType-option">
+									<ol></ol>
+                                    </div>
+								</div>
+								<div class="ui-input-field ui-drop-wrap ui-fold"><nobr>
+								<input name="socer" type="text" placeholder="请输入准确成绩" value=""class="js-email-input" style="width: 100px; border: 0;border-radius: 2px;" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="fun-caption" >向往学校地点/专业</div>
+					<div class="fun-section">
+						<div class="fun-content">
+							<div class="mod-area unpadding-h unpadding-v">
+								<div class="mod-row" id ="d1">
+								<span class="name">学校地点:</span>
+                                    <div class="ui-input-field ui-drop-wrap ui-fold" id ="city"  @click = "change">
+                                        <span class="ui-input-txt">Z 浙江</span>
+                                        <i class="ui-dir"></i>
+                                        <div class="ui-drop-panel ui-dropList-option js-prov-option">
+                                        <ol>
+											<li onclick = "onthis(this)"><a>A 安徽</a></li>
+											<li onclick = "onthis(this)"><a>B 北京</a></li>
+											<li onclick = "onthis(this)"><a>C 重庆</a></li>
+											<li onclick = "onthis(this)"><a>F 福建</a></li>
+											<li onclick = "onthis(this)"><a>G 贵州</a></li>
+											<li onclick = "onthis(this)"><a>G 甘肃</a></li>
+											<li onclick = "onthis(this)"><a>G 广东</a></li>
+											<li onclick = "onthis(this)"><a>G 广西</a></li>
+											<li onclick = "onthis(this)"><a>H 海南</a></li>
+											<li onclick = "onthis(this)"><a>H 河北</a></li>
+											<li onclick = "onthis(this)"><a>H 黑龙江</a></li>
+											<li onclick = "onthis(this)"><a>H 湖北</a></li>
+											<li onclick = "onthis(this)"><a>H 河南</a></li>
+											<li onclick = "onthis(this)"><a>H 湖南</a></li>
+											<li onclick = "onthis(this)"><a>J 江西</a></li>
+											<li onclick = "onthis(this)"><a>J 吉林</a></li>
+											<li onclick = "onthis(this)"><a>J 江苏</a></li>
+											<li onclick = "onthis(this)"><a>L 辽宁</a></li>
+											<li onclick = "onthis(this)"><a>N 内蒙古</a></li>
+											<li onclick = "onthis(this)"><a>N 宁夏</a></li>
+											<li onclick = "onthis(this)"><a>Q 青海</a></li>
+											<li onclick = "onthis(this)"><a>S 山西</a></li>
+											<li onclick = "onthis(this)"><a>S 上海</a></li>
+											<li onclick = "onthis(this)"><a>S 山东</a></li>
+											<li onclick = "onthis(this)"><a>S 陕西</a></li>
+											<li onclick = "onthis(this)"><a>S 四川</a></li>
+											<li onclick = "onthis(this)"><a>T 天津</a></li>
+											<li onclick = "onthis(this)"><a>X 新疆</a></li>
+											<li onclick = "onthis(this)"><a>X 西藏</a></li>
+											<li onclick = "onthis(this)"><a>Y 云南</a></li>
+											<li onclick = "onthis(this)"><a>Z 浙江</a></li></ol>
+                                        </div>
+                                    </div>
+									<span class= "name">专业：</span>
+                                    <div class="ui-input-field ui-drop-wrap ui-fold" data-key="major" id = "major">
+                                        <span class="ui-input-txt" >哲学</span>
+                                        <i class="ui-dir"></i>
+                                        <div class="ui-drop-panel ui-dropList-option js-city-option">
+                                            <ol>
+												<li onclick = "on(this)"><a>哲学</a></li>
+												<li onclick = "on(this)"><a>经济学</a></li>
+												<li onclick = "on(this)"><a>法学</a></li>
+												<li onclick = "on(this)"><a>教育学</a></li>
+												<li onclick = "on(this)"><a>文学</a></li>
+												<li onclick = "on(this)"><a>历史学</a></li>
+												<li onclick = "on(this)"><a>理学</a></li>
+												<li onclick = "on(this)"><a>工学</a></li>
+												<li onclick = "on(this)"><a>农学</a></li>
+												<li onclick = "on(this)"><a>医学</a></li>
+												<li onclick = "on(this)"><a>管理学</a></li>
+												<li onclick = "on(this)"><a>艺术学</a></li>
+                                            </ol>
+                                        </div>
+                                    </div>
+
+                                    <div class="ui-input-field ui-drop-wrap ui-fold " data-key="major_id" id="major_id">
+                                        <span class="ui-input-txt">哲学类</span>
+                                        <i class="ui-dir"></i>
+                                        <div class="ui-drop-panel ui-dropList-option js-region-option">
+                                            <ol name ="0" >
+												<li><a>哲学类</a></li>					
+												<li><a>人文科学试验班类</a></li>
+											</ol>
+											<ol style = "display:none" name ="1" >
+												<li><a>经济学类</a></li>
+												<li><a>财政学类</a></li>
+												<li><a>金融学类</a></li>
+												<li><a>经济与贸易类</a></li>
+											</ol>
+											<ol style = "display:none" name ="2" >
+												<li><a>法学类</a></li>
+												<li><a>政治学类</a></li>
+												<li><a>社会学类</a></li>
+												<li><a>民族学类</a></li>
+												<li><a>马克思主义理论类</a></li>
+												<li><a>公安学类</a></li>
+												<li><a>法学试验班类</a></li>
+											</ol>
+											<ol style = "display:none" name ="3" >
+												<li><a>教育学类</a></li>
+												<li><a>体育学类</a></li>
+												<li><a>职业技术教育类</a></li>
+											</ol>
+											<ol style = "display:none" name ="4" >
+												<li><a>中国语言文学类</a></li>
+												<li><a>外国语言文学类</a></li>
+												<li><a>新闻传播学类</a></li>
+												<li><a>文科试验班类</a></li>
+											</ol>
+											<ol style = "display:none" name ="5" >
+												<li><a>历史学类</a></li>
+											</ol>
+											<ol style = "display:none" name ="6" >
+												<li><a>数学类</a></li>
+												<li><a>物理学类</a></li>
+												<li><a>化学类</a></li>
+												<li><a>天文学类</a></li>
+												<li><a>地理科学类</a></li>
+												<li><a>大气科学类</a></li>
+												<li><a>海洋科学类</a></li>
+												<li><a>地球物理学类</a></li>
+												<li><a>地质学类</a></li>
+												<li><a>生物科学类</a></li>
+												<li><a>统计学类</a></li>
+												<li><a>理科试验班类</a></li>
+											</ol>
+											<ol style = "display:none" name ="7" >
+												<li><a>力学类</a></li>
+												<li><a>机械类</a></li>
+												<li><a>仪器类</a></li>
+												<li><a>材料类</a></li>
+												<li><a>能源动力类</a></li>
+												<li><a>电气类</a></li>
+												<li><a>电子信息类</a></li>
+												<li><a>自动化类</a></li>
+												<li><a>计算机类</a></li>
+												<li><a>土木类</a></li>
+												<li><a>水利类</a></li>
+												<li><a>测绘类</a></li>
+												<li><a>化工与制药类</a></li>
+												<li><a>地质类</a></li>
+												<li><a>矿业类</a></li>
+												<li><a>纺织类</a></li>
+												<li><a>轻工类</a></li>
+												<li><a>交通运输类</a></li>
+												<li><a>海洋工程类</a></li>
+												<li><a>航空航天类</a></li>
+												<li><a>兵器类</a></li>
+												<li><a>核工程类</a></li>
+												<li><a>农业工程类</a></li>
+												<li><a>林业工程类</a></li>
+												<li><a>环境科学与工程类</a></li>
+												<li><a>生物医学工程类</a></li>
+												<li><a>食品科学与工程类</a></li>
+												<li><a>建筑类</a></li>
+												<li><a>安全科学与工程类</a></li>
+												<li><a>生物工程类</a></li>
+												<li><a>公安技术类</a></li>
+												<li><a>工科试验班类</a></li>
+											</ol>
+											<ol style = "display:none" name ="8" >
+												<li><a>植物生产类</a></li>
+												<li><a>自然保护与环境生态类</a></li>
+												<li><a>动物生产类</a></li>
+												<li><a>动物医学类</a></li>
+												<li><a>林学类</a></li>
+												<li><a>水产类</a></li>
+												<li><a>草学类</a></li>
+											</ol>
+											<ol style = "display:none" name ="9" >
+												<li><a>基础医学类</a></li>
+												<li><a>临床医学类</a></li>
+												<li><a>口腔医学类</a></li>
+												<li><a>公共卫生与预防医学类</a></li>
+												<li><a>中医学类</a></li>
+												<li><a>中西医结合类</a></li>
+												<li><a>中药学类</a></li>
+												<li><a>法医学类</a></li>
+												<li><a>医学技术类</a></li>
+												<li><a>医学试验班类</a></li>
+											</ol>
+											<ol style = "display:none" name ="10" >
+												<li><a>管理科学与工程类</a></li>
+												<li><a>工商管理类</a></li>
+												<li><a>农业经济管理类</a></li>
+												<li><a>公共管理类</a></li>
+												<li><a>图书情报与档案管理类</a></li>
+												<li><a>物流管理与工程类</a></li>
+												<li><a>工业工程类</a></li>
+												<li><a>电子商务类</a></li>
+												<li><a>旅游管理类</a></li>
+											</ol>
+											<ol style = "display:none" name ="11" >
+												<li><a>艺术学理论类</a></li>
+												<li><a>音乐与舞蹈学类</a></li>
+												<li><a>戏剧与影视学类</a></li>
+												<li><a>美术学类</a></li>
+												<li><a>设计学类</a></li>
+											</ol>
+                                        </div>
+                                    </div>                             
+                                    <button>保存</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                   <div class="fun-wrap">
+                    <div class="fun-caption">帐号密码</div>
+                    
+                    <div class="fun-section">
+                        <div class="fun-title">
+                            <div class="title-wrap fl">
+                                <span class="icon">
+                                    <i class="icon-phone"></i>
+                                </span>
+                                <span class="title-label">手机号</span>
+                                <span class="title-txt">未绑定</span>
+                            </div>
+                            <div class="act-btn btn fr">
+                                    <span class="js-change-mobile" >绑定手机</span>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="fun-section">
+                        <div class="fun-title">
+                            <div class="title-wrap fl">
+                                <span class="icon">
+                                    <i class="icon-lock"></i>
+                                </span>
+                                <span class="title-label">登录密码</span>
+                            </div>
+                            <div class="act-btn btn fr">
+                                    <span class="js-reset-pwd" >设置密码</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                </div>
+
+            </div>
+</div>
+<div class="footer"> 
+     <div class="content"> 
+      <div class="clear"> 
+       <div class="footer-left"> 
+        <div class="clear"> 
+         <div class="footer-list"> 
+          <h3>VIP</h3> 
+          <ul> 
+           <li> <a href="" class="js-buy">购买VIP</a> </li> 
+           <li><a href="javascript:;" class="btn-activate-vip">激活</a></li> 
+          </ul> 
+         </div> 
+         <div class="footer-list"> 
+          <h3>常见问题</h3> 
+          <ul> 
+           <li><a href="" rel="nofollow">产品使用</a></li> 
+           <li><a href="" rel="nofollow">会员充值</a></li> 
+           <li><a href="" rel="nofollow">功能介绍</a></li>  
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+          <ul> 
+		  <h3>关于我们</h3>
+           <li><a href="" rel="nofollow">团队介绍</a></li> 
+           <li><a href="" rel="nofollow">联系我们</a></li> 
+           <li><a href="" rel="nofollow">商务合作</a></li> 
+           <li><a href="" rel="nofollow">服务条款</a></li> 
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+		 <h3>关注我们</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云订阅号</h3>
+				</li>
+			</ul> 
+			
+		 </div> 
+		 <div class="footer-list"> 
+			<h3>~</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云服务号</h3>
+				</li>
+			</ul> 
+		 </div> 
+
+        </div> 
+       </div> 
+       <div class="footer-right"> 
+        <h3>来电咨询:</h3> 
+        <p class="phone">400-xxx-xxxx</p> 
+        <p>期待为您提供帮助</p> 
+        <p>本服务只提供参考，不代表一定成功</p> 
+       </div> 
+      </div> 
+      <div class="service-tel">
+        客服热线：13456789
+      </div> 
+     </div> 
+</div>
+<script>
+	$(function(){
+		$(".btn-close ").live("click",function(){
+			$(".pop-dialog").html("");
+		});
+		
+		$(".js-change-mobile").click(function(){
+			$("body").append('<div class="pop-dialog" style="left:50%; top: 172.5px;"><div class="win-pop "><div class="inner"><div class="hd">  <h3>绑定手机</h3><a class="btn-close" title="关闭">×</a></div><div class="bd">    <form id="loginForm" attr="false" method="post" action="" target="_blank">      <div class="row"><div class="input disabled"><input type="text" id="mobile" name="mobile" autocomplete="off" placeholder="输入手机号" ></div></div><div class="row verify"><div class="inp-wrap"><div class="input"><span class="rg-wrap"><i class="yzm"></i></span>                       <input type="text" id="verify" name="verify" autocomplete="off" placeholder="输入短信验证码"></div><a href="" id="getAuthCode" class="btn-verify active">获取验证码</a></div></div></form>    <div class="act mar-t-10"><div class="reg-err-cont"><div class="err-inner hidden"></div></div><a class="btn btn-submitFrom" href = "#">确定</a></div></div></div></div></div>');
+		})
+	})
+</script>
+
+</body></html>

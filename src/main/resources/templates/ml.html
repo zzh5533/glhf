@@ -1,0 +1,33 @@
+<html>
+	<meta charset="UTF-8">
+	<div id="xk">
+	</div>
+
+    <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+    <script type="text/javascript">
+    
+    	$.ajax({
+            url: "/findMajor.html/mlaction1", //json文件位置
+            type: "POST", //请求方式为get
+            dataType: "json", //返回数据格式为json
+            success: function(data) { //请求成功完成后要执行的方法 
+                //each循环 使用$.each方法遍历返回的数据date
+                var html="";
+                $.each(data, function(key, value) {
+                	html+="<li id='"+key+"'>"+value+"<i class='iconfont'></i></li>";
+                })
+                $('#xk').html(html);	
+                	
+                	/* <i class='iconfont'>&#xe6a2;</i>
+                	var para=document.createElement("li");
+                	para.id = key;
+                	var node=document.createTextNode(value);
+                	para.appendChild(node);
+                	var element=document.getElementById("d1");
+                	element.appendChild(para); */
+               
+            }
+        })
+  
+    </script>
+</html>

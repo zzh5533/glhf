@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <title>高考志愿汇-高校信息</title> 
+  <link rel="stylesheet" href="./高考志愿汇/ipin-ico.css" /> 
+  <link rel="stylesheet" href="./高考志愿汇/base.css" /> 
+  <link rel="stylesheet" href="./高考志愿汇/school.css" /> 
+  <link rel="stylesheet" href="./高考志愿汇/gaokao.min.css" /> 
+  <link rel="stylesheet" type="text/css" href="./高考志愿汇/htmleaf-demo.css">
+  <script src="./高考志愿汇/jquery.min.js"></script> 
+  <script type="text/javascript" src="./高考志愿汇/paginathing.js"></script>
+  
+ <script>
+function getCookie(name) {
+	var strCookie = document.cookie;
+	var arrCookie = strCookie.split("; ");
+	for (var i = 0; i < arrCookie.length; i++) {
+		var arr = arrCookie[i].split("=");
+		if (arr[0] == name) return arr[1];
+	}
+	return "";
+}
+window.onload = function(){
+	var islogin = getCookie("userName");
+	var isscore = getCookie("score");
+	if(islogin !==''){
+		document.getElementById("login_link").innerHTML =islogin;
+		$("#cglogin").html('<ul class="user-menu-item "><li class="logout"><a>我的志愿表</a></li><li class="logout"><a>我的信息</a></li><li class="logout"><a>帐号安全</a></li><li class="logout"><a id="logout_link">退出登录</a></li></ul>');
+		$(".product").html('<a href="myapply.html">个人中心</a>');
+		$(".zhiyuan").html('<a href="myspace.html">填志愿</a>');
+		if(isscore !==''){
+			$(".zhiyuan").html('<a href="applysch.html">填志愿</a>');
+		}
+	}
+}
+
+$(function(){
+	$("#logout_link").live("click",function(){
+		document.cookie = "userName=";
+		document.cookie = "passWord=";
+		document.cookie = "score=";
+		document.cookie = "ScoreRank=";
+		document.cookie = "tele=";
+		window.location.reload(true);
+	});
+	$("#cglogin").live("mouseout",function(){
+		$("#cglogin").style.display = "block";
+	});
+})
+
+	var i = '_';
+	var z = '_';
+	var b = '_';
+
+	$(function () {
+		$.ajax({
+			type: "POST",//请求方式
+			url: '/schoolinfo.html/action',//指定的链接
+			data: {//请求后端的参数
+						 "schpro": i,
+						 "schtypename": z,
+						 "schlevelname":b
+				   },
+			dataType: "JSON",//或"TEXT" //请求返回的数据类型
+			async:false,  //是否需要同步
+			success: function (data) { //请求返回成功后执行的function
+				var html='';
+                $.each(data, function(key, value) {
+                	html+='<tr><td class="js-yxk-yxmc"> <a target="_blank" href="https://baike.baidu.com/item/'+value.schname+'">'+value.schname+'</a> </td>';
+	                html+='<td>'+value.schcode+'</td>';  
+	                html+='<td>'+value.schpro+'</td>'; 
+	                html+='<td>'+value.schtypename+'</td>'; 
+	                html+='<td>'+value.schlevelname+'</td>'; 
+	                html+='<td class="ch-table-center ch-table-link"><a class="js-alert-myd" href="" data-id="99617187">'+value.hot+'</a> </td></tr>';
+                })
+                $('#schinfo').html(html);	
+			}
+		})
+		
+		  $('#schinfo').paginathing({
+		      perPage: 20,
+		      insertAfter: '.table',
+		      pageNumbers: true
+		    });
+		
+        $(".tag ").click(function () {
+			if($(this).parent().attr('id') == 'prov_filter'){
+				if($(this).text()=="不限"){
+					i ='_';
+				}else{
+					i = $(this).text();
+				}
+			}else if($(this).parent().attr('id') == 'type_filter'){
+				if($(this).text()=="不限"){
+					z ='_';
+				}else{
+					z = $(this).text();
+				}
+			}else{
+				if($(this).text()=="不限"){
+					b ='_';
+				}else{
+					b = $(this).text();
+				}
+			}
+			$(this).removeClass("tag ");
+			$(this).addClass("tag active");
+			$(this).siblings().removeClass(" active");
+			$.ajax({
+				type: "POST",//请求方式
+				url: '/schoolinfo.html/action',//指定的链接
+				data: {//请求后端的参数
+							 "schpro": i,
+							 "schtypename": z,
+							 "schlevelname":b
+					   },
+				dataType: "JSON",//或"TEXT" //请求返回的数据类型
+				async:false,  //是否需要同步
+				success: function (data) { //请求返回成功后执行的function
+					var html='';
+	                $.each(data, function(key, value) {
+	                	html+='<tr><td class="js-yxk-yxmc"> <a target="_blank" href="">'+value.schname+'</a> </td>';
+		                html+='<td>'+value.schcode+'</td>';  
+		                html+='<td>'+value.schpro+'</td>'; 
+		                html+='<td>'+value.schtypename+'</td>'; 
+		                html+='<td>'+value.schlevelname+'</td>'; 
+		                html+='<td class="ch-table-center ch-table-link"><a class="js-alert-myd" href="" data-id="99617187">'+value.hot+'</a> </td></tr>';
+	                })
+	                $('#schinfo').html(html);	
+				}
+			})
+		});
+    });
+	 $(document).ready(function($){
+		  
+		  });
+</script>
+ </head>  
+ <body> 
+  <h1 class="page-main-title">高校院校大全-高考志愿汇</h1> 
+  <input type="text" hidden="" id="navTopValue" value="findSchool" /> 
+  <div class="hidden"> 
+   <a href="index.html"> <img src="./高考志愿汇/pro-tips-logo.png" /> </a> 
+  </div> 
+  <div class="g-head"> 
+   <div class="topNav clear"> 
+    <div class="content clear"> 
+     <ol class="topMenu fr"> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" rel="nofollow" class="agent"> <span>回到首页</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" rel="nofollow" class="agent"> <span>新手教程</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <a href="" target="_blank" rel="nofollow" class="agent"> <span>快速通道</span> </a> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-vip"> 
+        <span><a href="">开通</a></span> | 
+        <span class="btn-activate-vip">激活 VIP</span> 
+       </div> </li> 
+      <li class="topMenu-item"> 
+       <div class="act-user"> 
+						<span id="login_link"><a href="login.html">登录/注册</a></span> 
+						<div class="drop user-menu" id ="cglogin" style = " width:100px">
+							<ul class="user-menu-item ">
+								<li class="logout"><a href="login.html">请先登录</a></li>
+							</ul>
+						</div> 
+					</div>
+	</li> 
+     </ol> 
+    </div> 
+   </div> 
+   <div class="m-main-menu-wrap"> 
+    <div class="m-main-holder clear"> 
+     <div class="m-main-menu content"> 
+      <div class="logo-gkzyh fl">
+       <a href="index.html"><img class="logo" src="./高考志愿汇/logo-v7.png" /></a> 
+      </div> 
+      <div class="m-search"> 
+       <div class="m-input searchBar clear"> 
+        <input type="text" placeholder="搜索学校、专业" class="js-searchField" /> 
+        <i class="u-search js-searchIcon"></i> 
+        <a href="javascript:;" class="f-btn js-searchBtn ">搜索</a> 
+       </div> 
+      </div> 
+      <div class="m-time-end"></div> 
+     </div> 
+    </div> 
+    <div class="m-nav-warp clear"> 
+     <ul class="content"> 
+		<li class="index"><a href="index.html">首页</a></li> 
+		<li class="zhiyuan"><a href="applysch.html">填志愿</a></li> 
+		<li class="findSchool active"><a href="schoolinfo.html">找学校</a></li> 
+		<li class="findMajor"><a href="findMajor.html">找专业</a></li> 
+		<li class="rankingList"><a href="">排行榜</a></li> 
+		<li class="solve"><a href="solve.html">报考指导</a></li> 
+		<li class="product"><a href="login.html">个人中心</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="g-school"> 
+   <div class="content"> 
+    <div class="crumb"> 
+     <ul> 
+      <li><a href="index.html">首页</a></li> 
+      <li>&gt;</li> 
+      <li><a href="javascript:;">院校大全</a></li> 
+     </ul> 
+    </div> 
+    <div class=""> 
+     <div class="m-sch-search searchBar"> 
+      <input type="text" placeholder="搜索你感兴趣的学校" class="js-searchField" />
+      <span class="js-searchBtn b-search" href="javascrit:;">搜索</span> 
+      <div class="dropdown-box js-dropdownBox"></div> 
+     </div> 
+    </div> 
+    <div id="school_block"> 
+     <div class="subnav-box"> 
+      <dl class="clear"> 
+       <dt>
+        学校地区:
+       </dt> 
+       <dd> 
+        <ul class="clear" id="prov_filter" type="radio"> 
+         <li class="tag active" value="不限" all="true">不限</li> 
+         <li class="tag " value="安徽">安徽</li> 
+         <li class="tag " value="北京">北京</li> 
+         <li class="tag " value="重庆">重庆</li> 
+         <li class="tag " value="福建">福建</li> 
+         <li class="tag " value="甘肃">甘肃</li> 
+         <li class="tag " value="贵州">贵州</li> 
+         <li class="tag " value="广东">广东</li> 
+         <li class="tag " value="广西">广西</li> 
+         <li class="tag " value="湖北">湖北</li> 
+         <li class="tag " value="海南">海南</li> 
+         <li class="tag " value="黑龙江">黑龙江</li> 
+         <li class="tag " value="湖南">湖南</li> 
+         <li class="tag " value="河南">河南</li> 
+         <li class="tag " value="河北">河北</li> 
+         <li class="tag " value="吉林">吉林</li> 
+         <li class="tag " value="江西">江西</li> 
+         <li class="tag " value="江苏">江苏</li> 
+         <li class="tag " value="辽宁">辽宁</li> 
+         <li class="tag " value="宁夏">宁夏</li> 
+         <li class="tag " value="内蒙古">内蒙古</li> 
+         <li class="tag " value="青海">青海</li> 
+         <li class="tag " value="山西">山西</li> 
+         <li class="tag " value="山东">山东</li> 
+         <li class="tag " value="陕西">陕西</li> 
+         <li class="tag " value="四川">四川</li> 
+         <li class="tag " value="上海">上海</li> 
+         <li class="tag " value="天津">天津</li> 
+         <li class="tag " value="西藏">西藏</li> 
+         <li class="tag " value="新疆">新疆</li> 
+         <li class="tag " value="云南">云南</li> 
+         <li class="tag " value="浙江">浙江</li> 
+        </ul> 
+       </dd> 
+       <dt>
+        学校类型:
+       </dt> 
+       <dd> 
+        <ul class="clear" id="type_filter" type="radio"> 
+         <li class="tag active" value="不限" all="true">不限</li> 
+         <li class="tag " value="综合">综合</li> 
+         <li class="tag " value="语言">语言</li> 
+         <li class="tag " value="工科">工科</li> 
+         <li class="tag " value="医药">医药</li> 
+         <li class="tag " value="体育">体育</li> 
+         <li class="tag " value="财经">财经</li> 
+         <li class="tag " value="艺术">艺术</li> 
+         <li class="tag " value="民族">民族</li> 
+         <li class="tag " value="师范">师范</li> 
+         <li class="tag " value="林业">林业</li> 
+         <li class="tag " value="农业">农业</li> 
+         <li class="tag " value="政法">政法</li> 
+        </ul> 
+       </dd> 
+       <dt>
+        学校级别:
+       </dt> 
+       <dd> 
+        <ul class="clear" id="diploma_filter" type="radio"> 
+         <li class="tag active" value="不限" all="true">不限</li> 
+         <li class="tag " value="本科">本科</li> 
+         <li class="tag " value="专科">专科</li> 
+        </ul> 
+       </dd> 
+      </dl> 
+     </div> 
+     <div class="yxk-table"> 
+      <table class="ch-table"> 
+      	<thead>
+      		<tr>
+      			<th width="25%">院校名称</th>
+      			<th>院校代码</th>
+      			<th width="15%">院校所在地</th>
+      			<th width="15%">院校类型</th>
+      			<th width="15%">学历层次</th>
+      			<th width="15%" >评分</th>
+      		</tr>
+      	</thead>
+       <tbody id="schinfo"> 
+       </tbody>
+      </table> 
+      <br /> 
+<!--       <div class="gb_pages"> 
+       <div class="gb_page_con clear"> 
+        <a href="index.htmlapi/school-00-0-0-0#" class="page gb_page_cur" value="1">1</a> 
+        <a href="index.htmlapi/school-00-0-0-0#" class="page" value="2">2</a> 
+        <a href="index.htmlapi/school-00-0-0-0#" class="page" value="3">3</a> 
+        <a href="index.htmlapi/school-00-0-0-0#" class="page" value="4">4</a> 
+        <a href="index.htmlapi/school-00-0-0-0#" class="page" value="5">5</a> 
+        <a href="index.htmlapi/school-00-0-0-0#" class="page gb_page_next" title="下一页" value="2">下一页</a> 
+        <a href="index.htmlapi/school-00-0-0-0#" class="page gb_page_last" value="141">末页</a> 
+       </div> 
+      </div> --> 
+     </div> 
+    </div> 
+   </div> 
+  </div>
+  
+<div class="footer"> 
+     <div class="content"> 
+      <div class="clear"> 
+       <div class="footer-left"> 
+        <div class="clear"> 
+         <div class="footer-list"> 
+          <h3>VIP</h3> 
+          <ul> 
+           <li> <a href="" class="js-buy">购买VIP</a> </li> 
+           <li><a href="javascript:;" class="btn-activate-vip">激活</a></li> 
+          </ul> 
+         </div> 
+         <div class="footer-list"> 
+          <h3>常见问题</h3> 
+          <ul> 
+           <li><a href="" rel="nofollow">产品使用</a></li> 
+           <li><a href="" rel="nofollow">会员充值</a></li> 
+           <li><a href="" rel="nofollow">功能介绍</a></li>  
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+          <ul> 
+		  <h3>关于我们</h3>
+           <li><a href="" rel="nofollow">团队介绍</a></li> 
+           <li><a href="" rel="nofollow">联系我们</a></li> 
+           <li><a href="" rel="nofollow">商务合作</a></li> 
+           <li><a href="" rel="nofollow">服务条款</a></li> 
+          </ul> 
+         </div> 
+		 <div class="footer-list"> 
+		 <h3>关注我们</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云订阅号</h3>
+				</li>
+			</ul> 
+			
+		 </div> 
+		 <div class="footer-list"> 
+			<h3>~</h3>
+			<ul> 
+				<li>
+					<img src="高考志愿汇/img/dy_ewm.png" alt="" />
+						<h3>云服务号</h3>
+				</li>
+			</ul> 
+		 </div> 
+
+        </div> 
+       </div> 
+       <div class="footer-right"> 
+        <h3>来电咨询:</h3> 
+        <p class="phone">400-xxx-xxxx</p> 
+        <p>期待为您提供帮助</p> 
+        <p>本服务只提供参考，不代表一定成功</p> 
+       </div> 
+      </div> 
+      <div class="service-tel">
+        客服热线：13456789
+      </div> 
+     </div> 
+</div>
+ </body>
+</html>

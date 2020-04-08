@@ -1,0 +1,31 @@
+<html>
+<meta charset="UTF-8">
+<table class="ch-table">
+		<tbody id="tbody">
+		</tbody>
+	</table>
+	
+<script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+<script type="text/javascript">
+    $.ajax({
+    	url: "/findMajor.html/xkaction1", //json文件位置
+        type: "POST", //请求方式为get
+        dataType: "json", //返回数据格式为json
+        success: function(data) { //请求成功完成后要执行的方法 
+            //each循环 使用$.each方法遍历返回的数据date
+        	var html='<tr><th>专业名称</th><th width="120">专业代码</th><th width="120">开设院校</th><th width="120">专业主页</th></tr>';
+            $.each(data, function(key, value) {
+                html+='<tr><td>'+value+'</td><td>'+key+'</td><td>查看</td><td>查看</td></tr>';
+            })
+            $('#tbody').html(html);
+            	/* var tbody=document.getElementsByTagName("ch-table");
+                var tr=document.createElement("tr");
+                tr.innerHTML='<td>'+value+'</td><td>'+key+'</td>'+'</td><td>查看</td></td><td>查看</td>';
+                tbody[0].appendChild(tr); */
+               
+         	
+        }
+	})
+</script>
+    
+</html>
